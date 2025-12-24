@@ -1,16 +1,12 @@
-// import { CartStoreProvider } from "@/lib/store/cart-store-provider";
-// import { ChatStoreProvider } from "@/lib/store/chat-store-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SanityLive } from "@/sanity/lib/live";
 import { CartStoreProvider } from "@/lib/store/cart-store-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/app/Header";
 import { ChatStoreProvider } from "@/lib/store/chat-store-provider";
-// import { Toaster } from "@/components/ui/sonner";
-// import { Header } from "@/components/app/Header";
-// import { CartSheet } from "@/components/app/CartSheet";
-// import { ChatSheet } from "@/components/app/ChatSheet";
-// import { AppShell } from "@/components/app/AppShell";
+import { CartSheet } from "@/components/app/CartSheet";
+import { ChatSheet } from "@/components/app/ChatSheet";
+import { AppShell } from "@/components/app/AppShell";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -18,8 +14,12 @@ function AppLayout({ children }: { children: React.ReactNode }) {
       
       <CartStoreProvider>
       <ChatStoreProvider>
+        <AppShell>
       <Header />
             <main>{children}</main>
+            </AppShell>
+            <CartSheet />
+            <ChatSheet />
             <Toaster position="bottom-center" />
         
           <SanityLive />

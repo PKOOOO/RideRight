@@ -71,7 +71,7 @@ export function ChatSheet() {
           <div className="flex h-16 items-center justify-between px-6">
             <div className="flex items-center gap-2 font-semibold">
               <Sparkles className="h-5 w-5 text-amber-500" />
-              Shopping Assistant
+              RideRight AI
             </div>
             <Button variant="ghost" size="icon" onClick={closeChat}>
               <X className="h-4 w-4" />
