@@ -50,7 +50,7 @@ function ProductListContent({
     return (
       <EmptyState
         icon={Package}
-        title={filter ? "No products found" : "No products yet"}
+        title={filter ? "No Cars found" : "No Cars yet"}
         description={
           filter
             ? "Try adjusting your search terms."
@@ -59,11 +59,11 @@ function ProductListContent({
         action={
           !filter
             ? {
-                label: "Add Product",
-                onClick: onCreateProduct,
-                disabled: isCreating,
-                icon: isCreating ? Loader2 : Plus,
-              }
+              label: "Add Product",
+              onClick: onCreateProduct,
+              disabled: isCreating,
+              icon: isCreating ? Loader2 : Plus,
+            }
             : undefined
         }
       />

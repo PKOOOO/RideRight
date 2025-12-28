@@ -11,20 +11,20 @@ import { AppShell } from "@/components/app/AppShell";
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
-      
+
       <CartStoreProvider>
-      <ChatStoreProvider>
-        <AppShell>
-      <Header />
+        <ChatStoreProvider>
+          <AppShell>
+            <Header />
             <main>{children}</main>
-            </AppShell>
-            <CartSheet />
-            <ChatSheet />
-            <Toaster position="bottom-center" />
-        
+          </AppShell>
+          <CartSheet />
+          <ChatSheet />
+          <Toaster position="bottom-center" />
+
           <SanityLive />
-          </ChatStoreProvider>
-        
+        </ChatStoreProvider>
+
       </CartStoreProvider>
     </ClerkProvider>
   );

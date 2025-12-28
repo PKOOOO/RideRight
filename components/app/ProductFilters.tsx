@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
-import { COLORS, MATERIALS, SORT_OPTIONS } from "@/lib/constants/filters";
+import { FUEL_TYPES, TRANSMISSIONS, SORT_OPTIONS } from "@/lib/constants/filters";
 import type { ALL_CATEGORIES_QUERYResult } from "@/sanity.types";
 
 interface ProductFiltersProps {
@@ -27,11 +27,11 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
 
   const currentSearch = searchParams.get("q") ?? "";
   const currentCategory = searchParams.get("category") ?? "";
-  const currentColor = searchParams.get("color") ?? "";
-  const currentMaterial = searchParams.get("material") ?? "";
+  const currentFuelType = searchParams.get("fuelType") ?? "";
+  const currentTransmission = searchParams.get("transmission") ?? "";
   const currentSort = searchParams.get("sort") ?? "name";
   const urlMinPrice = Number(searchParams.get("minPrice")) || 0;
-  const urlMaxPrice = Number(searchParams.get("maxPrice")) || 5000;
+  const urlMaxPrice = Number(searchParams.get("maxPrice")) || 50000000;
   const currentInStock = searchParams.get("inStock") === "true";
 
   // Local state for price range (for smooth slider dragging)
@@ -48,16 +48,16 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   // Check which filters are active
   const isSearchActive = !!currentSearch;
   const isCategoryActive = !!currentCategory;
-  const isColorActive = !!currentColor;
-  const isMaterialActive = !!currentMaterial;
-  const isPriceActive = urlMinPrice > 0 || urlMaxPrice < 5000;
+  const isFuelTypeActive = !!currentFuelType;
+  const isTransmissionActive = !!currentTransmission;
+  const isPriceActive = urlMinPrice > 0 || urlMaxPrice < 50000000;
   const isInStockActive = currentInStock;
 
   const hasActiveFilters =
     isSearchActive ||
     isCategoryActive ||
-    isColorActive ||
-    isMaterialActive ||
+    isFuelTypeActive ||
+    isTransmissionActive ||
     isPriceActive ||
     isInStockActive;
 
@@ -65,8 +65,8 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   const activeFilterCount = [
     isSearchActive,
     isCategoryActive,
-    isColorActive,
-    isMaterialActive,
+    isFuelTypeActive,
+    isTransmissionActive,
     isPriceActive,
     isInStockActive,
   ].filter(Boolean).length;
@@ -107,6 +107,14 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
     }
   };
 
+  // Format price for display
+  const formatPriceDisplay = (price: number) => {
+    if (price >= 1000000) {
+      return `${(price / 1000000).toFixed(1)}M`;
+    }
+    return `${(price / 1000).toFixed(0)}K`;
+  };
+
   // Helper for filter label with active indicator
   const FilterLabel = ({
     children,
@@ -119,11 +127,10 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   }) => (
     <div className="mb-2 flex items-center justify-between">
       <span
-        className={`block text-sm font-medium ${
-          isActive
+        className={`block text-sm font-medium ${isActive
             ? "text-zinc-900 dark:text-zinc-100"
             : "text-zinc-700 dark:text-zinc-300"
-        }`}
+          }`}
       >
         {children}
         {isActive && (
@@ -175,13 +182,12 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
         <form onSubmit={handleSearchSubmit} className="flex gap-2">
           <Input
             name="search"
-            placeholder="Search products..."
+            placeholder="Search cars..."
             defaultValue={currentSearch}
-            className={`flex-1 ${
-              isSearchActive
+            className={`flex-1 ${isSearchActive
                 ? "border-amber-500 ring-1 ring-amber-500 dark:border-amber-400 dark:ring-amber-400"
                 : ""
-            }`}
+              }`}
           />
           <Button type="submit" size="sm">
             Search
@@ -189,10 +195,10 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
         </form>
       </div>
 
-      {/* Category */}
+      {/* Body Type (Category) */}
       <div>
         <FilterLabel isActive={isCategoryActive} filterKey="category">
-          Category
+          Body Type
         </FilterLabel>
         <Select
           value={currentCategory || "all"}
@@ -207,10 +213,10 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
                 : ""
             }
           >
-            <SelectValue placeholder="All Categories" />
+            <SelectValue placeholder="All Body Types" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
+            <SelectItem value="all">All Body Types</SelectItem>
             {categories.map((category) => (
               <SelectItem key={category._id} value={category.slug ?? ""}>
                 {category.title}
@@ -220,62 +226,62 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
         </Select>
       </div>
 
-      {/* Color */}
+      {/* Fuel Type */}
       <div>
-        <FilterLabel isActive={isColorActive} filterKey="color">
-          Color
+        <FilterLabel isActive={isFuelTypeActive} filterKey="fuelType">
+          Fuel Type
         </FilterLabel>
         <Select
-          value={currentColor || "all"}
+          value={currentFuelType || "all"}
           onValueChange={(value) =>
-            updateParams({ color: value === "all" ? null : value })
+            updateParams({ fuelType: value === "all" ? null : value })
           }
         >
           <SelectTrigger
             className={
-              isColorActive
+              isFuelTypeActive
                 ? "border-amber-500 ring-1 ring-amber-500 dark:border-amber-400 dark:ring-amber-400"
                 : ""
             }
           >
-            <SelectValue placeholder="All Colors" />
+            <SelectValue placeholder="All Fuel Types" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Colors</SelectItem>
-            {COLORS.map((color) => (
-              <SelectItem key={color.value} value={color.value}>
-                {color.label}
+            <SelectItem value="all">All Fuel Types</SelectItem>
+            {FUEL_TYPES.map((fuel) => (
+              <SelectItem key={fuel.value} value={fuel.value}>
+                {fuel.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
 
-      {/* Material */}
+      {/* Transmission */}
       <div>
-        <FilterLabel isActive={isMaterialActive} filterKey="material">
-          Material
+        <FilterLabel isActive={isTransmissionActive} filterKey="transmission">
+          Transmission
         </FilterLabel>
         <Select
-          value={currentMaterial || "all"}
+          value={currentTransmission || "all"}
           onValueChange={(value) =>
-            updateParams({ material: value === "all" ? null : value })
+            updateParams({ transmission: value === "all" ? null : value })
           }
         >
           <SelectTrigger
             className={
-              isMaterialActive
+              isTransmissionActive
                 ? "border-amber-500 ring-1 ring-amber-500 dark:border-amber-400 dark:ring-amber-400"
                 : ""
             }
           >
-            <SelectValue placeholder="All Materials" />
+            <SelectValue placeholder="All Transmissions" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Materials</SelectItem>
-            {MATERIALS.map((material) => (
-              <SelectItem key={material.value} value={material.value}>
-                {material.label}
+            <SelectItem value="all">All Transmissions</SelectItem>
+            {TRANSMISSIONS.map((trans) => (
+              <SelectItem key={trans.value} value={trans.value}>
+                {trans.label}
               </SelectItem>
             ))}
           </SelectContent>
@@ -285,18 +291,18 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
       {/* Price Range */}
       <div>
         <FilterLabel isActive={isPriceActive} filterKey="price">
-          Price Range: KES{priceRange[0]} - KES{priceRange[1]}
+          Price Range: KES {formatPriceDisplay(priceRange[0])} - KES {formatPriceDisplay(priceRange[1])}
         </FilterLabel>
         <Slider
           min={0}
-          max={5000}
-          step={100}
+          max={50000000}
+          step={500000}
           value={priceRange}
           onValueChange={(value) => setPriceRange(value as [number, number])}
           onValueCommit={([min, max]) =>
             updateParams({
               minPrice: min > 0 ? min : null,
-              maxPrice: max < 5000 ? max : null,
+              maxPrice: max < 50000000 ? max : null,
             })
           }
           className={`mt-4 ${isPriceActive ? "[&_[role=slider]]:border-amber-500 [&_[role=slider]]:ring-amber-500" : ""}`}
@@ -315,13 +321,12 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
             className="h-5 w-5 rounded border-zinc-300 text-amber-500 focus:ring-amber-500 dark:border-zinc-600 dark:bg-zinc-800"
           />
           <span
-            className={`text-sm font-medium ${
-              isInStockActive
+            className={`text-sm font-medium ${isInStockActive
                 ? "text-zinc-900 dark:text-zinc-100"
                 : "text-zinc-700 dark:text-zinc-300"
-            }`}
+              }`}
           >
-            Show only in-stock
+            Show only available
             {isInStockActive && (
               <Badge className="ml-2 h-5 bg-amber-500 px-1.5 text-xs text-white hover:bg-amber-500">
                 Active

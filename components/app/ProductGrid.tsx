@@ -13,7 +13,7 @@ export function ProductGrid({ products }: ProductGridProps) {
       <div className="min-h-[400px] rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/50">
         <EmptyState
           icon={PackageSearch}
-          title="No products found"
+          title="No Cars found"
           description="Try adjusting your search or filters to find what you're looking for"
           size="lg"
         />

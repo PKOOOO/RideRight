@@ -4,7 +4,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { AI_SEARCH_PRODUCTS_QUERY } from "@/lib/sanity/queries/products";
 import { formatPrice } from "@/lib/utils";
 import { getStockStatus, getStockMessage } from "@/lib/constants/stock";
-import { MATERIAL_VALUES, COLOR_VALUES } from "@/lib/constants/filters";
+import { FUEL_TYPE_VALUES, TRANSMISSION_VALUES } from "@/lib/constants/filters";
 import type { AI_SEARCH_PRODUCTS_QUERYResult } from "@/sanity.types";
 import type { SearchProduct } from "@/lib/ai/types";
 
@@ -14,47 +14,47 @@ const productSearchSchema = z.object({
     .optional()
     .default("")
     .describe(
-      "Search term to find products by name, description, or category (e.g., 'oak table', 'leather sofa', 'dining')"
+      "Search term to find cars by name, make, or description (e.g., 'Toyota', 'Land Cruiser', 'SUV')"
     ),
   category: z
     .string()
     .optional()
     .default("")
     .describe(
-      "Filter by category slug (e.g., 'sofas', 'tables', 'chairs', 'storage')"
+      "Filter by body type slug (e.g., 'suv', 'sedan', 'hatchback', 'coupe', 'pickup')"
     ),
-  material: z
-    .enum(["", ...MATERIAL_VALUES])
+  fuelType: z
+    .enum(["", ...FUEL_TYPE_VALUES])
     .optional()
     .default("")
-    .describe("Filter by material type"),
-  color: z
-    .enum(["", ...COLOR_VALUES])
+    .describe("Filter by fuel type"),
+  transmission: z
+    .enum(["", ...TRANSMISSION_VALUES])
     .optional()
     .default("")
-    .describe("Filter by color"),
+    .describe("Filter by transmission type"),
   minPrice: z
     .number()
     .optional()
     .default(0)
-    .describe("Minimum price in GBP (e.g., 100)"),
+    .describe("Minimum price in KES (e.g., 1000000)"),
   maxPrice: z
     .number()
     .optional()
     .default(0)
-    .describe("Maximum price in GBP (e.g., 500). Use 0 for no maximum."),
+    .describe("Maximum price in KES (e.g., 10000000). Use 0 for no maximum."),
 });
 
 export const searchProductsTool = tool({
   description:
-    "Search for products in the furniture store. Can search by name, description, or category, and filter by material, color, and price range. Returns product details including stock availability.",
+    "Search for cars in the dealership. Can search by name, make, or description, and filter by body type, fuel type, transmission, and price range. Returns car details including availability.",
   inputSchema: productSearchSchema,
-  execute: async ({ query, category, material, color, minPrice, maxPrice }) => {
+  execute: async ({ query, category, fuelType, transmission, minPrice, maxPrice }) => {
     console.log("[SearchProducts] Query received:", {
       query,
       category,
-      material,
-      color,
+      fuelType,
+      transmission,
       minPrice,
       maxPrice,
     });
@@ -65,26 +65,26 @@ export const searchProductsTool = tool({
         params: {
           searchQuery: query || "",
           categorySlug: category || "",
-          material: material || "",
-          color: color || "",
+          fuelType: fuelType || "",
+          transmission: transmission || "",
           minPrice: minPrice || 0,
           maxPrice: maxPrice || 0,
         },
       });
 
-      console.log("[SearchProducts] Products found:", products.length);
+      console.log("[SearchProducts] Cars found:", products.length);
 
       if (products.length === 0) {
         return {
           found: false,
           message:
-            "No products found matching your criteria. Try different search terms or filters.",
+            "No cars found matching your criteria. Try different search terms or filters.",
           products: [],
           filters: {
             query,
             category,
-            material,
-            color,
+            fuelType,
+            transmission,
             minPrice,
             maxPrice,
           },
@@ -103,28 +103,33 @@ export const searchProductsTool = tool({
         priceFormatted: product.price ? formatPrice(product.price) : null,
         category: product.category?.title ?? null,
         categorySlug: product.category?.slug ?? null,
-        material: product.material ?? null,
-        color: product.color ?? null,
-        dimensions: product.dimensions ?? null,
+        make: product.make ?? null,
+        year: product.year ?? null,
+        fuelType: product.fuelType ?? null,
+        engine: product.engine ?? null,
+        transmission: product.transmission ?? null,
+        location: product.location ?? null,
+        mileage: product.mileage ?? null,
+        horsePower: product.horsePower ?? null,
+        torque: product.torque ?? null,
         stockCount: product.stock ?? 0,
         stockStatus: getStockStatus(product.stock),
         stockMessage: getStockMessage(product.stock),
         featured: product.featured ?? false,
-        assemblyRequired: product.assemblyRequired ?? false,
         imageUrl: product.image?.asset?.url ?? null,
         productUrl: product.slug ? `/products/${product.slug}` : null,
       }));
 
       return {
         found: true,
-        message: `Found ${products.length} product${products.length === 1 ? "" : "s"} matching your search.`,
+        message: `Found ${products.length} car${products.length === 1 ? "" : "s"} matching your search.`,
         totalResults: products.length,
         products: formattedProducts,
         filters: {
           query,
           category,
-          material,
-          color,
+          fuelType,
+          transmission,
           minPrice,
           maxPrice,
         },
@@ -133,14 +138,14 @@ export const searchProductsTool = tool({
       console.error("[SearchProducts] Error:", error);
       return {
         found: false,
-        message: "An error occurred while searching for products.",
+        message: "An error occurred while searching for cars.",
         products: [],
         error: error instanceof Error ? error.message : "Unknown error",
         filters: {
           query,
           category,
-          material,
-          color,
+          fuelType,
+          transmission,
           minPrice,
           maxPrice,
         },

@@ -30,7 +30,7 @@ export function CartSheet() {
         <SheetHeader className="border-b border-zinc-200 dark:border-zinc-800">
           <SheetTitle className="flex items-center gap-2">
             <ShoppingBag className="h-5 w-5" />
-            Shopping Cart ({totalItems})
+            RideRight Cart ({totalItems})
             {isLoading && (
               <Loader2 className="h-4 w-4 animate-spin text-zinc-400" />
             )}

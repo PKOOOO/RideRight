@@ -1,3 +1,6 @@
+// Placeholder export - uncomment the code below when Stripe is configured
+export const POST = undefined;
+
 // import { headers } from "next/headers";
 // import { NextResponse } from "next/server";
 // import Stripe from "stripe";

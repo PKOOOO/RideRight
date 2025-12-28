@@ -345,72 +345,94 @@
         },
         "optional": true
       },
-      "material": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "union",
-          "of": [
-            {
-              "type": "string",
-              "value": "wood"
-            },
-            {
-              "type": "string",
-              "value": "metal"
-            },
-            {
-              "type": "string",
-              "value": "fabric"
-            },
-            {
-              "type": "string",
-              "value": "leather"
-            },
-            {
-              "type": "string",
-              "value": "glass"
-            }
-          ]
-        },
-        "optional": true
-      },
-      "color": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "union",
-          "of": [
-            {
-              "type": "string",
-              "value": "black"
-            },
-            {
-              "type": "string",
-              "value": "white"
-            },
-            {
-              "type": "string",
-              "value": "oak"
-            },
-            {
-              "type": "string",
-              "value": "walnut"
-            },
-            {
-              "type": "string",
-              "value": "grey"
-            },
-            {
-              "type": "string",
-              "value": "natural"
-            }
-          ]
-        },
-        "optional": true
-      },
-      "dimensions": {
+      "make": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
+        },
+        "optional": true
+      },
+      "year": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
+      "fuelType": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "petrol"
+            },
+            {
+              "type": "string",
+              "value": "diesel"
+            },
+            {
+              "type": "string",
+              "value": "electric"
+            },
+            {
+              "type": "string",
+              "value": "hybrid"
+            }
+          ]
+        },
+        "optional": true
+      },
+      "engine": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "transmission": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "automatic"
+            },
+            {
+              "type": "string",
+              "value": "manual"
+            }
+          ]
+        },
+        "optional": true
+      },
+      "location": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "mileage": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
+      "horsePower": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
+      "torque": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
         },
         "optional": true
       },
@@ -505,13 +527,6 @@
         "optional": true
       },
       "featured": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "boolean"
-        },
-        "optional": true
-      },
-      "assemblyRequired": {
         "type": "objectAttribute",
         "value": {
           "type": "boolean"

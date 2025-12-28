@@ -332,12 +332,7 @@ function ProductDetailContent({ handle }: { handle: DocumentHandle }) {
                   <ColorEditor {...handle} />
                 </Suspense>
               </div>
-              <div className="space-y-2 sm:col-span-2">
-                <Label>Dimensions</Label>
-                <Suspense fallback={<Skeleton className="h-10" />}>
-                  <DimensionsEditor {...handle} />
-                </Suspense>
-              </div>
+
             </div>
           </div>
 
@@ -361,14 +356,7 @@ function ProductDetailContent({ handle }: { handle: DocumentHandle }) {
                 </Suspense>
               </div>
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium text-zinc-900 dark:text-zinc-100">
-                    Assembly Required
-                  </p>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                    Customer will need to assemble
-                  </p>
-                </div>
+
                 <Suspense fallback={<Skeleton className="h-6 w-11" />}>
                   <AssemblyEditor {...handle} />
                 </Suspense>

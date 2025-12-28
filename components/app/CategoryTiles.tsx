@@ -21,11 +21,10 @@ export function CategoryTiles({
         {/* All Products tile */}
         <Link
           href="/"
-          className={`group relative flex-shrink-0 overflow-hidden rounded-xl transition-all duration-300 ${
-            !activeCategory
+          className={`group relative flex-shrink-0 overflow-hidden rounded-xl transition-all duration-300 ${!activeCategory
               ? "ring-2 ring-amber-500 ring-offset-2 dark:ring-offset-zinc-900"
               : "hover:ring-2 hover:ring-zinc-300 hover:ring-offset-2 dark:hover:ring-zinc-600 dark:hover:ring-offset-zinc-900"
-          }`}
+            }`}
         >
           <div className="relative h-32 w-56 sm:h-56 sm:w-80">
             {/* Gradient background */}
@@ -42,7 +41,7 @@ export function CategoryTiles({
             {/* Category name */}
             <div className="absolute inset-x-0 bottom-0 p-4">
               <span className="text-base font-semibold text-white drop-shadow-md">
-                All Products
+                All Cars
               </span>
             </div>
           </div>
@@ -57,11 +56,10 @@ export function CategoryTiles({
             <Link
               key={category._id}
               href={`/?category=${category.slug}`}
-              className={`group relative flex-shrink-0 overflow-hidden rounded-xl transition-all duration-300 ${
-                isActive
+              className={`group relative flex-shrink-0 overflow-hidden rounded-xl transition-all duration-300 ${isActive
                   ? "ring-2 ring-amber-500 ring-offset-2 dark:ring-offset-zinc-900"
                   : "hover:ring-2 hover:ring-zinc-300 hover:ring-offset-2 dark:hover:ring-zinc-600 dark:hover:ring-offset-zinc-900"
-              }`}
+                }`}
             >
               <div className="relative h-32 w-56 sm:h-56 sm:w-80">
                 {/* Background image or gradient fallback */}

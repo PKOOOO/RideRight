@@ -9,11 +9,11 @@ import { LOW_STOCK_THRESHOLD } from "@/lib/constants/stock";
 const PRODUCT_FILTER_CONDITIONS = `
   _type == "product"
   && ($categorySlug == "" || category->slug.current == $categorySlug)
-  && ($color == "" || color == $color)
-  && ($material == "" || material == $material)
+  && ($fuelType == "" || fuelType == $fuelType)
+  && ($transmission == "" || transmission == $transmission)
   && ($minPrice == 0 || price >= $minPrice)
   && ($maxPrice == 0 || price <= $maxPrice)
-  && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*")
+  && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*" || make match $searchQuery + "*")
   && ($inStock == false || stock > 0)
 `;
 
@@ -35,14 +35,23 @@ const FILTERED_PRODUCT_PROJECTION = `{
     title,
     "slug": slug.current
   },
-  material,
-  color,
+  make,
+  year,
+  fuelType,
+  engine,
+  transmission,
+
+  location,
+  mileage,
+  horsePower,
+  torque,
   stock
 }`;
 
 /** Scoring for relevance-based search */
 const RELEVANCE_SCORE = `score(
   boost(name match $searchQuery + "*", 3),
+  boost(make match $searchQuery + "*", 2),
   boost(description match $searchQuery + "*", 1)
 )`;
 
@@ -75,12 +84,18 @@ export const ALL_PRODUCTS_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  material,
-  color,
-  dimensions,
+  make,
+  year,
+  fuelType,
+  engine,
+  transmission,
+
+  location,
+  mileage,
+  horsePower,
+  torque,
   stock,
-  featured,
-  assemblyRequired
+  featured
 }`);
 
 /**
@@ -90,7 +105,7 @@ export const FEATURED_PRODUCTS_QUERY = defineQuery(`*[
   _type == "product"
   && featured == true
   && stock > 0
-] | order(name asc) [0...6] {
+] | order(year desc, name asc) [0...6] {
   _id,
   name,
   "slug": slug.current,
@@ -109,6 +124,16 @@ export const FEATURED_PRODUCTS_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
+  make,
+  year,
+  fuelType,
+  engine,
+  transmission,
+
+  location,
+  mileage,
+  horsePower,
+  torque,
   stock
 }`);
 
@@ -118,7 +143,7 @@ export const FEATURED_PRODUCTS_QUERY = defineQuery(`*[
 export const PRODUCTS_BY_CATEGORY_QUERY = defineQuery(`*[
   _type == "product"
   && category->slug.current == $categorySlug
-] | order(name asc) {
+] | order(year desc, name asc) {
   _id,
   name,
   "slug": slug.current,
@@ -135,8 +160,10 @@ export const PRODUCTS_BY_CATEGORY_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  material,
-  color,
+  make,
+  year,
+  fuelType,
+  transmission,
   stock
 }`);
 
@@ -166,12 +193,18 @@ export const PRODUCT_BY_SLUG_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  material,
-  color,
-  dimensions,
+  make,
+  year,
+  fuelType,
+  engine,
+  transmission,
+
+  location,
+  mileage,
+  horsePower,
+  torque,
   stock,
-  featured,
-  assemblyRequired
+  featured
 }`);
 
 // ============================================
@@ -189,9 +222,11 @@ export const SEARCH_PRODUCTS_QUERY = defineQuery(`*[
   && (
     name match $searchQuery + "*"
     || description match $searchQuery + "*"
+    || make match $searchQuery + "*"
   )
 ] | score(
   boost(name match $searchQuery + "*", 3),
+  boost(make match $searchQuery + "*", 2),
   boost(description match $searchQuery + "*", 1)
 ) | order(_score desc) {
   _id,
@@ -211,8 +246,15 @@ export const SEARCH_PRODUCTS_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  material,
-  color,
+  make,
+  year,
+  fuelType,
+  transmission,
+
+  location,
+  mileage,
+  horsePower,
+  torque,
   stock
 }`);
 
@@ -238,6 +280,14 @@ export const FILTER_PRODUCTS_BY_PRICE_ASC_QUERY = defineQuery(
  */
 export const FILTER_PRODUCTS_BY_PRICE_DESC_QUERY = defineQuery(
   `*[${PRODUCT_FILTER_CONDITIONS}] | order(price desc) ${FILTERED_PRODUCT_PROJECTION}`
+);
+
+/**
+ * Filter products - ordered by year (newest first)
+ * Returns up to 4 images for hover preview in product cards
+ */
+export const FILTER_PRODUCTS_BY_YEAR_DESC_QUERY = defineQuery(
+  `*[${PRODUCT_FILTER_CONDITIONS}] | order(year desc, name asc) ${FILTERED_PRODUCT_PROJECTION}`
 );
 
 /**
@@ -324,14 +374,15 @@ export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
     $searchQuery == ""
     || name match $searchQuery + "*"
     || description match $searchQuery + "*"
+    || make match $searchQuery + "*"
     || category->title match $searchQuery + "*"
   )
   && ($categorySlug == "" || category->slug.current == $categorySlug)
-  && ($material == "" || material == $material)
-  && ($color == "" || color == $color)
+  && ($fuelType == "" || fuelType == $fuelType)
+  && ($transmission == "" || transmission == $transmission)
   && ($minPrice == 0 || price >= $minPrice)
   && ($maxPrice == 0 || price <= $maxPrice)
-] | order(name asc) [0...20] {
+] | order(year desc, name asc) [0...20] {
   _id,
   name,
   "slug": slug.current,
@@ -348,10 +399,16 @@ export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  material,
-  color,
-  dimensions,
+  make,
+  year,
+  fuelType,
+  engine,
+  transmission,
+
+  location,
+  mileage,
+  horsePower,
+  torque,
   stock,
-  featured,
-  assemblyRequired
+  featured
 }`);

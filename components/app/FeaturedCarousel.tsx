@@ -167,7 +167,7 @@ function FeaturedSlide({ product }: FeaturedSlideProps) {
             className="bg-white text-zinc-900 hover:bg-zinc-100"
           >
             <Link href={`/products/${product.slug}`}>
-              Shop Now
+              View Details
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>

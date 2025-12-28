@@ -11,14 +11,19 @@ export interface SearchProduct {
   priceFormatted: string | null;
   category: string | null;
   categorySlug: string | null;
-  material: string | null;
-  color: string | null;
-  dimensions: string | null;
+  make: string | null;
+  year: number | null;
+  fuelType: string | null;
+  engine: string | null;
+  transmission: string | null;
+  location: string | null;
+  mileage: number | null;
+  horsePower: number | null;
+  torque: number | null;
   stockCount: number;
   stockStatus: "in_stock" | "low_stock" | "out_of_stock" | "unknown";
   stockMessage: string;
   featured: boolean;
-  assemblyRequired: boolean;
   imageUrl: string | null;
   productUrl: string | null;
 }
@@ -32,8 +37,8 @@ export interface SearchProductsResult {
   filters: {
     query: string;
     category: string;
-    material: string;
-    color: string;
+    fuelType: string;
+    transmission: string;
     minPrice: number;
     maxPrice: number;
   };

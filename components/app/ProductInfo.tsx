@@ -14,7 +14,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
   return (
     <div className="flex flex-col">
-      {/* Category */}
+      {/* Category (Body Type) */}
       {product.category && (
         <Link
           href={`/?category=${product.category.slug}`}
@@ -46,45 +46,85 @@ export function ProductInfo({ product }: ProductInfoProps) {
         <StockBadge productId={product._id} stock={product.stock ?? 0} />
         <AddToCartButton
           productId={product._id}
-          name={product.name ?? "Unknown Product"}
+          name={product.name ?? "Unknown Car"}
           price={product.price ?? 0}
           image={imageUrl ?? undefined}
           stock={product.stock ?? 0}
         />
-        <AskAISimilarButton productName={product.name ?? "this product"} />
+        <AskAISimilarButton productName={product.name ?? "this car"} />
       </div>
 
-      {/* Metadata */}
+      {/* Car Specifications */}
       <div className="mt-6 space-y-2 border-t border-zinc-200 pt-6 dark:border-zinc-800">
-        {product.material && (
+        {product.make && (
           <div className="flex justify-between text-sm">
-            <span className="text-zinc-500 dark:text-zinc-400">Material</span>
-            <span className="font-medium capitalize text-zinc-900 dark:text-zinc-100">
-              {product.material}
-            </span>
-          </div>
-        )}
-        {product.color && (
-          <div className="flex justify-between text-sm">
-            <span className="text-zinc-500 dark:text-zinc-400">Color</span>
-            <span className="font-medium capitalize text-zinc-900 dark:text-zinc-100">
-              {product.color}
-            </span>
-          </div>
-        )}
-        {product.dimensions && (
-          <div className="flex justify-between text-sm">
-            <span className="text-zinc-500 dark:text-zinc-400">Dimensions</span>
+            <span className="text-zinc-500 dark:text-zinc-400">Make</span>
             <span className="font-medium text-zinc-900 dark:text-zinc-100">
-              {product.dimensions}
+              {product.make}
             </span>
           </div>
         )}
-        {product.assemblyRequired !== null && (
+        {product.year && (
           <div className="flex justify-between text-sm">
-            <span className="text-zinc-500 dark:text-zinc-400">Assembly</span>
+            <span className="text-zinc-500 dark:text-zinc-400">Year</span>
             <span className="font-medium text-zinc-900 dark:text-zinc-100">
-              {product.assemblyRequired ? "Required" : "Not required"}
+              {product.year}
+            </span>
+          </div>
+        )}
+        {product.fuelType && (
+          <div className="flex justify-between text-sm">
+            <span className="text-zinc-500 dark:text-zinc-400">Fuel Type</span>
+            <span className="font-medium capitalize text-zinc-900 dark:text-zinc-100">
+              {product.fuelType}
+            </span>
+          </div>
+        )}
+        {product.engine && (
+          <div className="flex justify-between text-sm">
+            <span className="text-zinc-500 dark:text-zinc-400">Engine</span>
+            <span className="font-medium text-zinc-900 dark:text-zinc-100">
+              {product.engine}
+            </span>
+          </div>
+        )}
+        {product.transmission && (
+          <div className="flex justify-between text-sm">
+            <span className="text-zinc-500 dark:text-zinc-400">Transmission</span>
+            <span className="font-medium capitalize text-zinc-900 dark:text-zinc-100">
+              {product.transmission}
+            </span>
+          </div>
+        )}
+        {product.location && (
+          <div className="flex justify-between text-sm">
+            <span className="text-zinc-500 dark:text-zinc-400">Location</span>
+            <span className="font-medium text-zinc-900 dark:text-zinc-100">
+              {product.location}
+            </span>
+          </div>
+        )}
+        {product.mileage && (
+          <div className="flex justify-between text-sm">
+            <span className="text-zinc-500 dark:text-zinc-400">Mileage</span>
+            <span className="font-medium text-zinc-900 dark:text-zinc-100">
+              {product.mileage.toLocaleString()} km
+            </span>
+          </div>
+        )}
+        {product.horsePower && (
+          <div className="flex justify-between text-sm">
+            <span className="text-zinc-500 dark:text-zinc-400">Horse Power</span>
+            <span className="font-medium text-zinc-900 dark:text-zinc-100">
+              {product.horsePower} HP
+            </span>
+          </div>
+        )}
+        {product.torque && (
+          <div className="flex justify-between text-sm">
+            <span className="text-zinc-500 dark:text-zinc-400">Torque</span>
+            <span className="font-medium text-zinc-900 dark:text-zinc-100">
+              {product.torque} Nm
             </span>
           </div>
         )}

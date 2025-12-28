@@ -6,15 +6,15 @@ interface WelcomeScreenProps {
 }
 
 const productSuggestions = [
-  "Show me oak tables",
-  "Leather sofas under KES1000",
-  "What chairs do you have?",
+  "Show me SUVs",
+  "Toyota cars under KES 5 million",
+  "What automatic cars do you have?",
 ];
 
 const orderSuggestions = [
-  "Where's my order?",
+  "Where's my car?",
   "Show me my recent orders",
-  "Has my order shipped?",
+  "Has my order been delivered?",
 ];
 
 export function WelcomeScreen({
@@ -31,15 +31,15 @@ export function WelcomeScreen({
       </h3>
       <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400 max-w-xs">
         {isSignedIn
-          ? "I can help you find furniture, check your orders, and track deliveries."
-          : "I can help you find furniture by style, material, color, or price. Just ask!"}
+          ? "I can help you find cars, check your orders, and track deliveries."
+          : "I can help you find cars by make, fuel type, transmission, or price. Just ask!"}
       </p>
 
-      {/* Product suggestions */}
+      {/* Car suggestions */}
       <div className="mt-6 w-full max-w-sm">
         <div className="flex items-center gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
           <Search className="h-3 w-3" />
-          Find products
+          Find cars
         </div>
         <div className="flex flex-wrap justify-center gap-2">
           {productSuggestions.map((suggestion) => (

@@ -1,10 +1,10 @@
 import { PackageIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
-import { MATERIALS_SANITY_LIST, COLORS_SANITY_LIST } from "@/lib/constants/filters";
+import { FUEL_TYPES_SANITY_LIST, TRANSMISSIONS_SANITY_LIST } from "@/lib/constants/filters";
 
 export const productType = defineType({
   name: "product",
-  title: "Product",
+  title: "Car",
   type: "document",
   icon: PackageIcon,
   groups: [
@@ -15,9 +15,11 @@ export const productType = defineType({
   fields: [
     defineField({
       name: "name",
+      title: "Car Title",
       type: "string",
       group: "details",
-      validation: (rule) => [rule.required().error("Product name is required")],
+      description: "e.g., '2023 Toyota Land Cruiser V8'",
+      validation: (rule) => [rule.required().error("Car title is required")],
     }),
     defineField({
       name: "slug",
@@ -36,13 +38,13 @@ export const productType = defineType({
       type: "text",
       group: "details",
       rows: 4,
-      description: "Product description",
+      description: "Detailed car description",
     }),
     defineField({
       name: "price",
       type: "number",
       group: "details",
-      description: "Price in GBP (e.g., 599.99)",
+      description: "Price in KES",
       validation: (rule) => [
         rule.required().error("Price is required"),
         rule.positive().error("Price must be a positive number"),
@@ -50,34 +52,89 @@ export const productType = defineType({
     }),
     defineField({
       name: "category",
+      title: "Body Type",
       type: "reference",
       to: [{ type: "category" }],
       group: "details",
-      validation: (rule) => [rule.required().error("Category is required")],
+      description: "e.g., SUV, Sedan, Hatchback",
+      validation: (rule) => [rule.required().error("Body type is required")],
     }),
     defineField({
-      name: "material",
+      name: "make",
+      title: "Make",
+      type: "string",
+      group: "details",
+      description: "e.g., Toyota, BMW, Mercedes",
+      validation: (rule) => [rule.required().error("Make is required")],
+    }),
+    defineField({
+      name: "year",
+      title: "Year",
+      type: "number",
+      group: "details",
+      description: "Manufacturing year",
+      validation: (rule) => [
+        rule.required().error("Year is required"),
+        rule.min(1900).error("Year must be 1900 or later"),
+        rule.max(new Date().getFullYear() + 1).error("Year cannot be in the future"),
+      ],
+    }),
+    defineField({
+      name: "fuelType",
+      title: "Fuel Type",
       type: "string",
       group: "details",
       options: {
-        list: MATERIALS_SANITY_LIST,
+        list: FUEL_TYPES_SANITY_LIST,
         layout: "radio",
       },
+      validation: (rule) => [rule.required().error("Fuel type is required")],
     }),
     defineField({
-      name: "color",
+      name: "engine",
+      title: "Engine",
+      type: "string",
+      group: "details",
+      description: "e.g., '5700 CC', '2000 CC Turbo'",
+    }),
+    defineField({
+      name: "transmission",
+      title: "Transmission",
       type: "string",
       group: "details",
       options: {
-        list: COLORS_SANITY_LIST,
+        list: TRANSMISSIONS_SANITY_LIST,
         layout: "radio",
       },
+      validation: (rule) => [rule.required().error("Transmission is required")],
     }),
     defineField({
-      name: "dimensions",
+      name: "location",
+      title: "Current Location",
       type: "string",
       group: "details",
-      description: 'e.g., "120cm x 80cm x 75cm"',
+      description: "e.g., 'Nairobi, Kenya'",
+    }),
+    defineField({
+      name: "mileage",
+      title: "Mileage",
+      type: "number",
+      group: "details",
+      description: "Mileage in km",
+    }),
+    defineField({
+      name: "horsePower",
+      title: "Horse Power",
+      type: "number",
+      group: "details",
+      description: "Engine Horse Power (HP)",
+    }),
+    defineField({
+      name: "torque",
+      title: "Torque",
+      type: "number",
+      group: "details",
+      description: "Engine Torque (Nm)",
     }),
     defineField({
       name: "images",
@@ -99,8 +156,8 @@ export const productType = defineType({
       name: "stock",
       type: "number",
       group: "inventory",
-      initialValue: 0,
-      description: "Number of items in stock",
+      initialValue: 1,
+      description: "Number of units available",
       validation: (rule) => [
         rule.min(0).error("Stock cannot be negative"),
         rule.integer().error("Stock must be a whole number"),
@@ -113,13 +170,6 @@ export const productType = defineType({
       initialValue: false,
       description: "Show on homepage and promotions",
     }),
-    defineField({
-      name: "assemblyRequired",
-      type: "boolean",
-      group: "inventory",
-      initialValue: false,
-      description: "Does this product require assembly?",
-    }),
   ],
   preview: {
     select: {
@@ -127,11 +177,13 @@ export const productType = defineType({
       subtitle: "category.title",
       media: "images.0",
       price: "price",
+      year: "year",
+      make: "make",
     },
-    prepare({ title, subtitle, media, price }) {
+    prepare({ title, subtitle, media, price, year, make }) {
       return {
         title,
-        subtitle: `${subtitle ? subtitle + " • " : ""}KES${price ?? 0}`,
+        subtitle: `${make ?? ""} ${year ?? ""} • ${subtitle ?? ""} • KES ${(price ?? 0).toLocaleString()}`,
         media,
       };
     },

@@ -10,7 +10,7 @@ import { formatPrice, formatDate, formatOrderNumber } from "@/lib/utils";
 import { StackedProductImages } from "@/components/app/StackedProductImages";
 
 export const metadata = {
-  title: "Your Orders | Furniture Shop",
+  title: "Your Orders | RideRight",
   description: "View your order history",
 };
 
@@ -48,7 +48,7 @@ export default async function OrdersPage() {
       </div>
 
       <div className="space-y-4">
-        {orders.map((order) => {
+        {orders.map((order: { _id: string; orderNumber?: string | null; status?: string | null; total?: number | null; createdAt?: string | null; itemImages?: (string | null)[] | null; itemCount?: number | null; itemNames?: (string | null)[] | null }) => {
           const status = getOrderStatus(order.status);
           const StatusIcon = status.icon;
           const images = (order.itemImages ?? []).filter(
