@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartActions } from "@/lib/store/cart-store-provider";
-import { AddToCartButton } from "@/components/app/AddToCartButton";
 import { StockBadge } from "@/components/app/StockBadge";
 import { cn, formatPrice } from "@/lib/utils";
 import type { CartItem as CartItemType } from "@/lib/store/cart-store";
@@ -57,7 +56,7 @@ export function CartItem({ item, stockInfo }: CartItemProps) {
       <div className="flex flex-1 flex-col">
         <div className="flex justify-between">
           <Link
-            href={`/products/${item.productId}`}
+            href={`/products/${item.slug}`}
             className={cn(
               "font-medium text-zinc-900 hover:text-zinc-600 dark:text-zinc-100 dark:hover:text-zinc-300",
               isOutOfStock && "text-zinc-400 dark:text-zinc-500",

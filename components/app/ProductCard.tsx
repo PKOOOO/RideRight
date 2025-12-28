@@ -133,6 +133,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <AddToCartButton
           productId={product._id}
           name={product.name ?? "Unknown Product"}
+          slug={product.slug ?? ""}
           price={product.price ?? 0}
           image={mainImageUrl ?? undefined}
           stock={stock}

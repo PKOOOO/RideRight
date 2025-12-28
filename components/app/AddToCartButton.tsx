@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 interface AddToCartButtonProps {
   productId: string;
   name: string;
+  slug: string;
   price: number;
   image?: string;
   stock: number;
@@ -18,6 +19,7 @@ interface AddToCartButtonProps {
 export function AddToCartButton({
   productId,
   name,
+  slug,
   price,
   image,
   stock,
@@ -31,7 +33,7 @@ export function AddToCartButton({
 
   const handleAdd = () => {
     if (quantityInCart === 0) {
-      addItem({ productId, name, price, image }, 1);
+      addItem({ productId, name, slug, price, image }, 1);
       toast.success(`Added ${name}`);
     }
     openCart();

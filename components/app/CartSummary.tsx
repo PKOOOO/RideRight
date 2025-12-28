@@ -6,6 +6,7 @@ import { formatPrice } from "@/lib/utils";
 import {
   useTotalPrice,
   useTotalItems,
+  useCartItems,
   useCartActions,
 } from "@/lib/store/cart-store-provider";
 
@@ -16,9 +17,29 @@ interface CartSummaryProps {
 export function CartSummary({ hasStockIssues = false }: CartSummaryProps) {
   const totalPrice = useTotalPrice();
   const totalItems = useTotalItems();
+  const cartItems = useCartItems();
   const { closeCart } = useCartActions();
 
   if (totalItems === 0) return null;
+
+  const handleWhatsAppClick = () => {
+    const phoneNumber = "254741535521";
+    const baseUrl = window.location.origin;
+
+    let message = "Hi I'm interested in the ";
+
+    cartItems.forEach((item, index) => {
+      if (index > 0) message += ", ";
+      message += `${item.name}\n`;
+      message += `Link: ${baseUrl}/products/${item.slug}\n`;
+    });
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://api.whatsapp.com/send/?phone=${phoneNumber}&text=${encodedMessage}&type=phone_number&app_absent=0`;
+
+    window.open(whatsappUrl, "_blank");
+    closeCart();
+  };
 
   return (
     <div className="border-t border-zinc-200 p-4 dark:border-zinc-800">
@@ -35,10 +56,8 @@ export function CartSummary({ hasStockIssues = false }: CartSummaryProps) {
             Resolve stock issues to checkout
           </Button>
         ) : (
-          <Button asChild className="w-full">
-            <Link href="/checkout" onClick={() => closeCart()}>
-              Discuss Purchase
-            </Link>
+          <Button onClick={handleWhatsAppClick} className="w-full">
+            Discuss Purchase
           </Button>
         )}
       </div>
