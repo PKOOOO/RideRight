@@ -103,7 +103,7 @@ export const searchProductsTool = tool({
         priceFormatted: product.price ? formatPrice(product.price) : null,
         category: product.category?.title ?? null,
         categorySlug: product.category?.slug ?? null,
-        make: product.make ?? null,
+        make: product.category?.title ?? null,
         year: product.year ?? null,
         fuelType: product.fuelType ?? null,
         engine: product.engine ?? null,

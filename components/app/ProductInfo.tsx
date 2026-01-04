@@ -57,14 +57,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
       {/* Car Specifications */}
       <div className="mt-6 space-y-2 border-t border-zinc-200 pt-6 dark:border-zinc-800">
-        {product.make && (
-          <div className="flex justify-between text-sm">
-            <span className="text-zinc-500 dark:text-zinc-400">Make</span>
-            <span className="font-medium text-zinc-900 dark:text-zinc-100">
-              {product.make}
-            </span>
-          </div>
-        )}
+
         {product.year && (
           <div className="flex justify-between text-sm">
             <span className="text-zinc-500 dark:text-zinc-400">Year</span>
