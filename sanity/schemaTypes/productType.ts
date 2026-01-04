@@ -52,21 +52,14 @@ export const productType = defineType({
     }),
     defineField({
       name: "category",
-      title: "Body Type",
+      title: "Make",
       type: "reference",
       to: [{ type: "category" }],
-      group: "details",
-      description: "e.g., SUV, Sedan, Hatchback",
-      validation: (rule) => [rule.required().error("Body type is required")],
-    }),
-    defineField({
-      name: "make",
-      title: "Make",
-      type: "string",
       group: "details",
       description: "e.g., Toyota, BMW, Mercedes",
       validation: (rule) => [rule.required().error("Make is required")],
     }),
+
     defineField({
       name: "year",
       title: "Year",
@@ -178,12 +171,11 @@ export const productType = defineType({
       media: "images.0",
       price: "price",
       year: "year",
-      make: "make",
     },
-    prepare({ title, subtitle, media, price, year, make }) {
+    prepare({ title, subtitle, media, price, year }) {
       return {
         title,
-        subtitle: `${make ?? ""} ${year ?? ""} • ${subtitle ?? ""} • KES ${(price ?? 0).toLocaleString()}`,
+        subtitle: `${subtitle ?? ""} ${year ?? ""} • KES ${(price ?? 0).toLocaleString()}`,
         media,
       };
     },

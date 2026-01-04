@@ -163,7 +163,7 @@ export async function GET() {
     const avgOrderValue =
       recentOrders.length > 0
         ? recentOrders.reduce((sum, o) => sum + (o.total || 0), 0) /
-          recentOrders.length
+        recentOrders.length
         : 0;
 
     // Prepare data summary for AI

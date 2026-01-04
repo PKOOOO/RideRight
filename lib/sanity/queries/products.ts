@@ -13,7 +13,7 @@ const PRODUCT_FILTER_CONDITIONS = `
   && ($transmission == "" || transmission == $transmission)
   && ($minPrice == 0 || price >= $minPrice)
   && ($maxPrice == 0 || price <= $maxPrice)
-  && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*" || make match $searchQuery + "*")
+  && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*" || category->title match $searchQuery + "*")
   && ($inStock == false || stock > 0)
 `;
 
@@ -35,7 +35,7 @@ const FILTERED_PRODUCT_PROJECTION = `{
     title,
     "slug": slug.current
   },
-  make,
+
   year,
   fuelType,
   engine,
@@ -51,7 +51,7 @@ const FILTERED_PRODUCT_PROJECTION = `{
 /** Scoring for relevance-based search */
 const RELEVANCE_SCORE = `score(
   boost(name match $searchQuery + "*", 3),
-  boost(make match $searchQuery + "*", 2),
+  boost(category->title match $searchQuery + "*", 2),
   boost(description match $searchQuery + "*", 1)
 )`;
 
@@ -84,7 +84,7 @@ export const ALL_PRODUCTS_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  make,
+
   year,
   fuelType,
   engine,
@@ -124,7 +124,7 @@ export const FEATURED_PRODUCTS_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  make,
+
   year,
   fuelType,
   engine,
@@ -160,7 +160,7 @@ export const PRODUCTS_BY_CATEGORY_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  make,
+
   year,
   fuelType,
   transmission,
@@ -193,7 +193,7 @@ export const PRODUCT_BY_SLUG_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  make,
+
   year,
   fuelType,
   engine,
@@ -222,11 +222,11 @@ export const SEARCH_PRODUCTS_QUERY = defineQuery(`*[
   && (
     name match $searchQuery + "*"
     || description match $searchQuery + "*"
-    || make match $searchQuery + "*"
+    || category->title match $searchQuery + "*"
   )
 ] | score(
   boost(name match $searchQuery + "*", 3),
-  boost(make match $searchQuery + "*", 2),
+  boost(category->title match $searchQuery + "*", 2),
   boost(description match $searchQuery + "*", 1)
 ) | order(_score desc) {
   _id,
@@ -246,7 +246,7 @@ export const SEARCH_PRODUCTS_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  make,
+
   year,
   fuelType,
   transmission,
@@ -374,7 +374,7 @@ export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
     $searchQuery == ""
     || name match $searchQuery + "*"
     || description match $searchQuery + "*"
-    || make match $searchQuery + "*"
+
     || category->title match $searchQuery + "*"
   )
   && ($categorySlug == "" || category->slug.current == $categorySlug)
@@ -399,7 +399,7 @@ export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-  make,
+
   year,
   fuelType,
   engine,
