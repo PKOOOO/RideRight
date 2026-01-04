@@ -13,6 +13,8 @@ import { ProductSection } from "@/components/app/ProductSection";
 import { CategoryTiles } from "@/components/app/CategoryTiles";
 import { FeaturedCarousel } from "@/components/app/FeaturedCarousel";
 import { FeaturedCarouselSkeleton } from "@/components/app/FeaturedCarouselSkeleton";
+import { FAQSection } from "@/components/app/FAQSection";
+import { AboutSection } from "@/components/app/AboutSection";
 
 interface PageProps {
   searchParams: Promise<{
@@ -120,6 +122,9 @@ export default async function HomePage({ searchParams }: PageProps) {
           searchQuery={searchQuery}
         />
       </div>
+
+      <AboutSection />
+      <FAQSection />
     </div>
   );
 }

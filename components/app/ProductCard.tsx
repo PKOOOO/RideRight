@@ -38,7 +38,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div
           className={cn(
             "relative overflow-hidden bg-gradient-to-br from-zinc-100 to-zinc-50 dark:from-zinc-800 dark:to-zinc-900",
-            hasMultipleImages ? "aspect-square" : "aspect-[4/3]",
+            "aspect-[3/2]",
           )}
         >
           {displayedImageUrl ? (
@@ -46,7 +46,7 @@ export function ProductCard({ product }: ProductCardProps) {
               src={displayedImageUrl}
               alt={product.name ?? "Product image"}
               fill
-              className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-110"
+              className="object-cover object-center transition-transform duration-500 ease-out"
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
             />
           ) : (
@@ -87,13 +87,13 @@ export function ProductCard({ product }: ProductCardProps) {
 
       {/* Thumbnail strip - only show if multiple images */}
       {hasMultipleImages && (
-        <div className="flex gap-2 border-t border-zinc-100 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-800/50">
-          {images.map((image, index) => (
+        <div className="flex gap-2 px-3 pb-3 bg-zinc-50/50 dark:bg-zinc-800/50">
+          {images.slice(0, 3).map((image, index) => (
             <button
               key={image._key ?? index}
               type="button"
               className={cn(
-                "relative h-14 flex-1 overflow-hidden rounded-lg transition-all duration-200",
+                "relative aspect-[4/3] flex-1 overflow-hidden rounded-lg transition-all duration-200",
                 hoveredImageIndex === index
                   ? "ring-2 ring-zinc-900 ring-offset-2 dark:ring-white dark:ring-offset-zinc-900"
                   : "opacity-50 hover:opacity-100",

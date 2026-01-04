@@ -315,7 +315,7 @@ function ProductDetailContent({ handle }: { handle: DocumentHandle }) {
           </div>
 
           {/* Attributes */}
-          <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900 sm:p-6">
+          {/* <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900 sm:p-6">
             <h2 className="mb-4 font-semibold text-zinc-900 dark:text-zinc-100">
               Attributes
             </h2>
@@ -334,7 +334,7 @@ function ProductDetailContent({ handle }: { handle: DocumentHandle }) {
               </div>
 
             </div>
-          </div>
+          </div> */}
 
           {/* Options */}
           <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900 sm:p-6">

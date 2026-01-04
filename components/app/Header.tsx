@@ -23,6 +23,28 @@ export function Header() {
           </span>
         </Link>
 
+        {/* Navigation Links */}
+        <nav className="hidden items-center gap-6 md:flex">
+          <a
+            href="/#about"
+            className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+          >
+            About
+          </a>
+          <a
+            href="/#services"
+            className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+          >
+            Services
+          </a>
+          <a
+            href="/#faq"
+            className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+          >
+            FAQ
+          </a>
+        </nav>
+
         {/* Actions */}
         <div className="flex items-center gap-2">
           {/* My Orders - Only when signed in */}

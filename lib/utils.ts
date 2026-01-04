@@ -15,8 +15,10 @@ export function formatPrice(
   amount: number | null | undefined,
   currency = "KES"
 ): string {
-  const roundedAmount = Math.round(amount ?? 0);
-  return `${currency} ${roundedAmount.toLocaleString('en-US')}`;
+  if (amount === null || amount === undefined) {
+    return `${currency} 0M`;
+  }
+  return `${currency} ${amount.toLocaleString('en-US')}M`;
 }
 
 type DateFormatOption = "short" | "long" | "datetime";

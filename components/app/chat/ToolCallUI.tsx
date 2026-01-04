@@ -59,11 +59,10 @@ export function ToolCallUI({ toolPart, closeChat }: ToolCallUIProps) {
           <ToolIcon className="h-4 w-4 text-amber-600 dark:text-amber-400" />
         </div>
         <div
-          className={`flex items-center gap-3 rounded-xl px-4 py-2 text-sm ${
-            isComplete
-              ? "bg-emerald-50 border border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-800"
-              : "bg-amber-50 border border-amber-200 dark:bg-amber-950/30 dark:border-amber-800"
-          }`}
+          className={`flex items-center gap-3 rounded-xl px-4 py-2 text-sm ${isComplete
+            ? "bg-emerald-50 border border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-800"
+            : "bg-amber-50 border border-amber-200 dark:bg-amber-950/30 dark:border-amber-800"
+            }`}
         >
           {isComplete ? (
             <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
@@ -72,11 +71,10 @@ export function ToolCallUI({ toolPart, closeChat }: ToolCallUIProps) {
           )}
           <div className="flex flex-col">
             <span
-              className={`font-medium ${
-                isComplete
-                  ? "text-emerald-700 dark:text-emerald-300"
-                  : "text-amber-700 dark:text-amber-300"
-              }`}
+              className={`font-medium ${isComplete
+                ? "text-emerald-700 dark:text-emerald-300"
+                : "text-amber-700 dark:text-amber-300"
+                }`}
             >
               {isComplete ? `${displayName} complete` : `${displayName}...`}
             </span>
@@ -98,7 +96,7 @@ export function ToolCallUI({ toolPart, closeChat }: ToolCallUIProps) {
       {hasProducts && productResult?.products && (
         <div className="ml-11 mt-2">
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-2">
-            {productResult.products.length} product
+            {productResult.products.length} car
             {productResult.products.length !== 1 ? "s" : ""} found
           </p>
           <div className="space-y-2">

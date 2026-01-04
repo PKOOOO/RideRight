@@ -63,7 +63,7 @@ export const searchProductsTool = tool({
       const { data: products } = await sanityFetch({
         query: AI_SEARCH_PRODUCTS_QUERY,
         params: {
-          searchQuery: query || "",
+          searchQuery: (query || "").replace(/\bseater\b/gi, "seat"),
           categorySlug: category || "",
           fuelType: fuelType || "",
           transmission: transmission || "",
