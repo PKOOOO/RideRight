@@ -128,8 +128,8 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
     <div className="mb-2 flex items-center justify-between">
       <span
         className={`block text-sm font-medium ${isActive
-            ? "text-zinc-900 dark:text-zinc-100"
-            : "text-zinc-700 dark:text-zinc-300"
+          ? "text-zinc-900 dark:text-zinc-100"
+          : "text-zinc-700 dark:text-zinc-300"
           }`}
       >
         {children}
@@ -185,8 +185,8 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
             placeholder="Search cars..."
             defaultValue={currentSearch}
             className={`flex-1 ${isSearchActive
-                ? "border-amber-500 ring-1 ring-amber-500 dark:border-amber-400 dark:ring-amber-400"
-                : ""
+              ? "border-amber-500 ring-1 ring-amber-500 dark:border-amber-400 dark:ring-amber-400"
+              : ""
               }`}
           />
           <Button type="submit" size="sm">
@@ -198,7 +198,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
       {/* Body Type (Category) */}
       <div>
         <FilterLabel isActive={isCategoryActive} filterKey="category">
-          Body Type
+          Make
         </FilterLabel>
         <Select
           value={currentCategory || "all"}
@@ -213,10 +213,10 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
                 : ""
             }
           >
-            <SelectValue placeholder="All Body Types" />
+            <SelectValue placeholder="All Makes" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Body Types</SelectItem>
+            <SelectItem value="all">All Makes</SelectItem>
             {categories.map((category) => (
               <SelectItem key={category._id} value={category.slug ?? ""}>
                 {category.title}
@@ -322,8 +322,8 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
           />
           <span
             className={`text-sm font-medium ${isInStockActive
-                ? "text-zinc-900 dark:text-zinc-100"
-                : "text-zinc-700 dark:text-zinc-300"
+              ? "text-zinc-900 dark:text-zinc-100"
+              : "text-zinc-700 dark:text-zinc-300"
               }`}
           >
             Show only available
