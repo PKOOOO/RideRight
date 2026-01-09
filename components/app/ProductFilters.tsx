@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
-import { FUEL_TYPES, TRANSMISSIONS, SORT_OPTIONS } from "@/lib/constants/filters";
+import { FUEL_TYPES, TRANSMISSIONS, ORIGIN_TYPES, SORT_OPTIONS } from "@/lib/constants/filters";
 import type { ALL_CATEGORIES_QUERYResult } from "@/sanity.types";
 
 interface ProductFiltersProps {
@@ -29,9 +29,10 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   const currentCategory = searchParams.get("category") ?? "";
   const currentFuelType = searchParams.get("fuelType") ?? "";
   const currentTransmission = searchParams.get("transmission") ?? "";
+  const currentOrigin = searchParams.get("origin") ?? "";
   const currentSort = searchParams.get("sort") ?? "name";
   const urlMinPrice = Number(searchParams.get("minPrice")) || 0;
-  const urlMaxPrice = Number(searchParams.get("maxPrice")) || 50000000;
+  const urlMaxPrice = Number(searchParams.get("maxPrice")) || 20000000;
   const currentInStock = searchParams.get("inStock") === "true";
 
   // Local state for price range (for smooth slider dragging)
@@ -50,7 +51,8 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   const isCategoryActive = !!currentCategory;
   const isFuelTypeActive = !!currentFuelType;
   const isTransmissionActive = !!currentTransmission;
-  const isPriceActive = urlMinPrice > 0 || urlMaxPrice < 50000000;
+  const isOriginActive = !!currentOrigin;
+  const isPriceActive = urlMinPrice > 0 || urlMaxPrice < 20000000;
   const isInStockActive = currentInStock;
 
   const hasActiveFilters =
@@ -58,6 +60,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
     isCategoryActive ||
     isFuelTypeActive ||
     isTransmissionActive ||
+    isOriginActive ||
     isPriceActive ||
     isInStockActive;
 
@@ -67,6 +70,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
     isCategoryActive,
     isFuelTypeActive,
     isTransmissionActive,
+    isOriginActive,
     isPriceActive,
     isInStockActive,
   ].filter(Boolean).length;
@@ -134,7 +138,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
       >
         {children}
         {isActive && (
-          <Badge className="ml-2 h-5 bg-amber-500 px-1.5 text-xs text-white hover:bg-amber-500">
+          <Badge className="ml-2 h-5 bg-red-500 px-1.5 text-xs text-white hover:bg-red-500">
             Active
           </Badge>
         )}
@@ -156,9 +160,9 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
     <div className="space-y-6 rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950">
       {/* Clear Filters - Show at top when active */}
       {hasActiveFilters && (
-        <div className="rounded-lg border-2 border-amber-300 bg-amber-50 p-3 dark:border-amber-700 dark:bg-amber-950">
+        <div className="rounded-lg border-2 border-red-300 bg-red-50 p-3 dark:border-red-700 dark:bg-red-950">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-sm font-medium text-amber-800 dark:text-amber-200">
+            <span className="text-sm font-medium text-red-800 dark:text-red-200">
               {activeFilterCount}{" "}
               {activeFilterCount === 1 ? "filter" : "filters"} applied
             </span>
@@ -166,7 +170,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
           <Button
             size="sm"
             onClick={handleClearFilters}
-            className="w-full bg-amber-500 text-white hover:bg-amber-600 dark:bg-amber-600 dark:hover:bg-amber-700"
+            className="w-full bg-red-500 text-white hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700"
           >
             <X className="mr-2 h-4 w-4" />
             Clear All Filters
@@ -185,7 +189,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
             placeholder="Search cars..."
             defaultValue={currentSearch}
             className={`flex-1 ${isSearchActive
-              ? "border-amber-500 ring-1 ring-amber-500 dark:border-amber-400 dark:ring-amber-400"
+              ? "border-red-500 ring-1 ring-red-500 dark:border-red-400 dark:ring-red-400"
               : ""
               }`}
           />
@@ -209,7 +213,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
           <SelectTrigger
             className={
               isCategoryActive
-                ? "border-amber-500 ring-1 ring-amber-500 dark:border-amber-400 dark:ring-amber-400"
+                ? "border-red-500 ring-1 ring-red-500 dark:border-red-400 dark:ring-red-400"
                 : ""
             }
           >
@@ -240,7 +244,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
           <SelectTrigger
             className={
               isFuelTypeActive
-                ? "border-amber-500 ring-1 ring-amber-500 dark:border-amber-400 dark:ring-amber-400"
+                ? "border-red-500 ring-1 ring-red-500 dark:border-red-400 dark:ring-red-400"
                 : ""
             }
           >
@@ -271,7 +275,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
           <SelectTrigger
             className={
               isTransmissionActive
-                ? "border-amber-500 ring-1 ring-amber-500 dark:border-amber-400 dark:ring-amber-400"
+                ? "border-red-500 ring-1 ring-red-500 dark:border-red-400 dark:ring-red-400"
                 : ""
             }
           >
@@ -288,6 +292,37 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
         </Select>
       </div>
 
+      {/* Origin */}
+      <div>
+        <FilterLabel isActive={isOriginActive} filterKey="origin">
+          Origin
+        </FilterLabel>
+        <Select
+          value={currentOrigin || "all"}
+          onValueChange={(value) =>
+            updateParams({ origin: value === "all" ? null : value })
+          }
+        >
+          <SelectTrigger
+            className={
+              isOriginActive
+                ? "border-red-500 ring-1 ring-red-500 dark:border-red-400 dark:ring-red-400"
+                : ""
+            }
+          >
+            <SelectValue placeholder="All Origins" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Origins</SelectItem>
+            {ORIGIN_TYPES.map((origin) => (
+              <SelectItem key={origin.value} value={origin.value}>
+                {origin.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* Price Range */}
       <div>
         <FilterLabel isActive={isPriceActive} filterKey="price">
@@ -295,17 +330,17 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
         </FilterLabel>
         <Slider
           min={0}
-          max={50000000}
+          max={20000000}
           step={500000}
           value={priceRange}
           onValueChange={(value) => setPriceRange(value as [number, number])}
           onValueCommit={([min, max]) =>
             updateParams({
               minPrice: min > 0 ? min : null,
-              maxPrice: max < 50000000 ? max : null,
+              maxPrice: max < 20000000 ? max : null,
             })
           }
-          className={`mt-4 ${isPriceActive ? "[&_[role=slider]]:border-amber-500 [&_[role=slider]]:ring-amber-500" : ""}`}
+          className={`mt-4 ${isPriceActive ? "[&_[role=slider]]:border-red-500 [&_[role=slider]]:ring-red-500" : ""}`}
         />
       </div>
 
@@ -318,7 +353,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
             onChange={(e) =>
               updateParams({ inStock: e.target.checked ? "true" : null })
             }
-            className="h-5 w-5 rounded border-zinc-300 text-amber-500 focus:ring-amber-500 dark:border-zinc-600 dark:bg-zinc-800"
+            className="h-5 w-5 rounded border-zinc-300 text-red-500 focus:ring-red-500 dark:border-zinc-600 dark:bg-zinc-800"
           />
           <span
             className={`text-sm font-medium ${isInStockActive
@@ -328,7 +363,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
           >
             Show only available
             {isInStockActive && (
-              <Badge className="ml-2 h-5 bg-amber-500 px-1.5 text-xs text-white hover:bg-amber-500">
+              <Badge className="ml-2 h-5 bg-red-500 px-1.5 text-xs text-white hover:bg-red-500">
                 Active
               </Badge>
             )}

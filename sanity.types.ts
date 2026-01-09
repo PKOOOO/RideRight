@@ -73,6 +73,7 @@ export type Product = {
   fuelType?: "petrol" | "diesel" | "electric" | "hybrid";
   engine?: string;
   transmission?: "automatic" | "manual";
+  origin?: "locally_used" | "imported";
   location?: string;
   mileage?: number;
   horsePower?: number;

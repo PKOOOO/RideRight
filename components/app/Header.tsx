@@ -1,9 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { Package, ShoppingBag, Sparkles, User } from "lucide-react";
+import Image from "next/image";
+import { Package, ShoppingBag, Sparkles, User, Menu } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useCartActions, useTotalItems } from "@/lib/store/cart-store-provider";
 import { useChatActions, useIsChatOpen } from "@/lib/store/chat-store-provider";
 
@@ -18,9 +26,14 @@ export function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
-            RideRight
-          </span>
+          <Image
+            src="/loggo.png"
+            alt="RideRight Logo"
+            width={120}
+            height={40}
+            className="h-10 w-auto object-contain"
+            priority
+          />
         </Link>
 
         {/* Navigation Links */}
@@ -61,7 +74,7 @@ export function Header() {
           {!isChatOpen && (
             <Button
               onClick={openChat}
-              className="gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-200/50 transition-all hover:from-amber-600 hover:to-orange-600 hover:shadow-lg hover:shadow-amber-300/50 dark:shadow-amber-900/30 dark:hover:shadow-amber-800/40"
+              className="gap-2 bg-gradient-to-r from-red-500 to-red-500 text-white shadow-md shadow-red-200/50 transition-all hover:from-red-600 hover:to-red-600 hover:shadow-lg hover:shadow-red-300/50 dark:shadow-red-900/30 dark:hover:shadow-red-800/40"
             >
               <Sparkles className="h-4 w-4" />
               <span className="text-sm font-medium">Ask AI</span>
@@ -105,12 +118,55 @@ export function Header() {
           </SignedIn>
           <SignedOut>
             <SignInButton mode="modal">
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
                 <User className="h-5 w-5" />
                 <span className="sr-only">Sign in</span>
               </Button>
             </SignInButton>
           </SignedOut>
+
+          {/* Mobile Menu */}
+          <div className="md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right">
+                <SheetHeader>
+                  <SheetTitle>Menu</SheetTitle>
+                </SheetHeader>
+                <div className="mt-6 flex flex-col gap-4">
+                  <Link href="/#about" className="text-lg font-medium">
+                    About
+                  </Link>
+                  <Link href="/#services" className="text-lg font-medium">
+                    Services
+                  </Link>
+                  <Link href="/#faq" className="text-lg font-medium">
+                    FAQ
+                  </Link>
+                  <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800">
+                    <SignedOut>
+                      <SignInButton mode="modal">
+                        <Button className="w-full bg-red-600 hover:bg-red-700 text-white">
+                          Sign In
+                        </Button>
+                      </SignInButton>
+                    </SignedOut>
+                    <SignedIn>
+                      <div className="flex items-center gap-2 mb-4">
+                        <UserButton afterSwitchSessionUrl="/" />
+                        <span className="text-sm font-medium">Account</span>
+                      </div>
+                    </SignedIn>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>

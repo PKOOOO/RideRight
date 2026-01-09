@@ -140,7 +140,7 @@ function FeaturedSlide({ product }: FeaturedSlideProps) {
         {product.category && (
           <Badge
             variant="secondary"
-            className="mb-4 w-fit bg-amber-500/20 text-amber-400 hover:bg-amber-500/30"
+            className="mb-4 w-fit bg-red-500/20 text-red-400 hover:bg-red-500/30"
           >
             {product.category.title}
           </Badge>

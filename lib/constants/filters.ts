@@ -15,6 +15,11 @@ export const TRANSMISSIONS = [
   { value: "manual", label: "Manual" },
 ] as const;
 
+export const ORIGIN_TYPES = [
+  { value: "locally_used", label: "Locally Used" },
+  { value: "imported", label: "Imported" },
+] as const;
+
 export const SORT_OPTIONS = [
   { value: "name", label: "Name (A-Z)" },
   { value: "price_asc", label: "Price: Low to High" },
@@ -26,6 +31,7 @@ export const SORT_OPTIONS = [
 // Type exports
 export type FuelTypeValue = (typeof FUEL_TYPES)[number]["value"];
 export type TransmissionValue = (typeof TRANSMISSIONS)[number]["value"];
+export type OriginValue = (typeof ORIGIN_TYPES)[number]["value"];
 export type SortValue = (typeof SORT_OPTIONS)[number]["value"];
 
 // ============================================
@@ -41,6 +47,12 @@ export const FUEL_TYPES_SANITY_LIST = FUEL_TYPES.map(({ value, label }) => ({
 
 /** Transmissions formatted for Sanity schema options.list */
 export const TRANSMISSIONS_SANITY_LIST = TRANSMISSIONS.map(({ value, label }) => ({
+  title: label,
+  value,
+}));
+
+/** Origin types formatted for Sanity schema options.list */
+export const ORIGIN_TYPES_SANITY_LIST = ORIGIN_TYPES.map(({ value, label }) => ({
   title: label,
   value,
 }));

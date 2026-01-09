@@ -18,7 +18,7 @@ export function AskAISimilarButton({ productName }: AskAISimilarButtonProps) {
   return (
     <Button
       onClick={handleClick}
-      className="w-full gap-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg hover:from-amber-600 hover:to-orange-700 hover:shadow-xl dark:from-amber-600 dark:to-orange-700 dark:hover:from-amber-700 dark:hover:to-orange-800"
+      className="w-full gap-2 bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg hover:from-red-600 hover:to-red-700 hover:shadow-xl dark:from-red-600 dark:to-red-700 dark:hover:from-red-700 dark:hover:to-red-800"
     >
       <Sparkles className="h-4 w-4" />
       Ask AI for similar Cars

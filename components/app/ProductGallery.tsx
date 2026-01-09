@@ -66,12 +66,12 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
       {/* Thumbnail Carousel */}
       {images.length > 1 && (
         <div className="relative">
-          <div className="overflow-hidden" ref={emblaRef}>
+          <div className="overflow-visible py-1" ref={emblaRef}>
             <div className="flex -ml-2">
               {images.map((image, index) => (
                 <div
                   key={image._key}
-                  className="min-w-0 flex-[0_0_25%] pl-2 sm:flex-[0_0_20%] md:flex-[0_0_16.666%]"
+                  className="min-w-0 flex-[0_0_30%] pl-2 sm:flex-[0_0_25%] md:flex-[0_0_20%]"
                 >
                   <button
                     type="button"
@@ -81,7 +81,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                     className={cn(
                       "relative aspect-[3/2] w-full overflow-hidden rounded-md bg-zinc-100 transition-all dark:bg-zinc-800",
                       selectedIndex === index
-                        ? "ring-2 ring-zinc-900 dark:ring-zinc-100"
+                        ? "ring-2 ring-offset-2 ring-red-500 dark:ring-red-400"
                         : "opacity-70 hover:opacity-100",
                     )}
                   >

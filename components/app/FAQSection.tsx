@@ -101,7 +101,7 @@ export function FAQSection() {
                                             <div className={cn(
                                                 "flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors",
                                                 isOpen
-                                                    ? "bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-400"
+                                                    ? "bg-red-100 text-red-600 dark:bg-red-900/50 dark:text-red-400"
                                                     : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
                                             )}>
                                                 <Icon className="h-5 w-5" />
@@ -113,7 +113,7 @@ export function FAQSection() {
                                         <ChevronDown
                                             className={cn(
                                                 "h-5 w-5 shrink-0 text-zinc-400 transition-transform duration-200",
-                                                isOpen && "rotate-180 text-amber-600 dark:text-amber-400"
+                                                isOpen && "rotate-180 text-red-600 dark:text-red-400"
                                             )}
                                         />
                                     </CollapsibleTrigger>

@@ -1,6 +1,6 @@
 import { PackageIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
-import { FUEL_TYPES_SANITY_LIST, TRANSMISSIONS_SANITY_LIST } from "@/lib/constants/filters";
+import { FUEL_TYPES_SANITY_LIST, TRANSMISSIONS_SANITY_LIST, ORIGIN_TYPES_SANITY_LIST } from "@/lib/constants/filters";
 
 export const productType = defineType({
   name: "product",
@@ -100,6 +100,17 @@ export const productType = defineType({
         layout: "radio",
       },
       validation: (rule) => [rule.required().error("Transmission is required")],
+    }),
+    defineField({
+      name: "origin",
+      title: "Origin",
+      type: "string",
+      group: "details",
+      description: "Whether the vehicle is locally used or imported",
+      options: {
+        list: ORIGIN_TYPES_SANITY_LIST,
+        layout: "radio",
+      },
     }),
     defineField({
       name: "location",

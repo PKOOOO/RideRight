@@ -29,7 +29,7 @@ export function AboutSection() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* About Us Header */}
                 <div className="mx-auto max-w-3xl text-center">
-                    <h2 className="text-base font-semibold leading-7 text-amber-600 dark:text-amber-500">
+                    <h2 className="text-base font-semibold leading-7 text-red-600 dark:text-red-500">
                         About RideRight Autos Ltd
                     </h2>
                     <p className="mt-2 text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
@@ -43,7 +43,7 @@ export function AboutSection() {
                 {/* Introduction Text Grid */}
                 <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-12">
                     <div className="rounded-2xl bg-zinc-50 p-8 dark:bg-zinc-800/50">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-600">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-600">
                             <Globe className="h-6 w-6 text-white" />
                         </div>
                         <h3 className="mt-4 text-lg font-semibold text-zinc-900 dark:text-white">Global Sourcing</h3>
@@ -52,7 +52,7 @@ export function AboutSection() {
                         </p>
                     </div>
                     <div className="rounded-2xl bg-zinc-50 p-8 dark:bg-zinc-800/50">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-600">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-600">
                             <Star className="h-6 w-6 text-white" />
                         </div>
                         <h3 className="mt-4 text-lg font-semibold text-zinc-900 dark:text-white">Ready Stock</h3>
@@ -61,7 +61,7 @@ export function AboutSection() {
                         </p>
                     </div>
                     <div className="rounded-2xl bg-zinc-50 p-8 dark:bg-zinc-800/50">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-600">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-600">
                             <HeartHandshake className="h-6 w-6 text-white" />
                         </div>
                         <h3 className="mt-4 text-lg font-semibold text-zinc-900 dark:text-white">Peace of Mind</h3>
@@ -86,7 +86,7 @@ export function AboutSection() {
                         {/* Core Services */}
                         <div>
                             <div className="flex items-center gap-x-3 border-b border-zinc-200 pb-4 dark:border-zinc-700">
-                                <Award className="h-6 w-6 text-amber-600" />
+                                <Award className="h-6 w-6 text-red-600" />
                                 <h3 className="text-xl font-semibold leading-8 text-zinc-900 dark:text-white">Core Services</h3>
                             </div>
                             <ul role="list" className="mt-8 space-y-4">
@@ -102,7 +102,7 @@ export function AboutSection() {
                         {/* Other Services */}
                         <div>
                             <div className="flex items-center gap-x-3 border-b border-zinc-200 pb-4 dark:border-zinc-700">
-                                <Shield className="h-6 w-6 text-amber-600" />
+                                <Shield className="h-6 w-6 text-red-600" />
                                 <h3 className="text-xl font-semibold leading-8 text-zinc-900 dark:text-white">Other Services</h3>
                             </div>
                             <ul role="list" className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">

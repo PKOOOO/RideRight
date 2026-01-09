@@ -401,6 +401,23 @@
         },
         "optional": true
       },
+      "origin": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "locally_used"
+            },
+            {
+              "type": "string",
+              "value": "imported"
+            }
+          ]
+        },
+        "optional": true
+      },
       "location": {
         "type": "objectAttribute",
         "value": {
