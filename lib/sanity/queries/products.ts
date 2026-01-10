@@ -11,6 +11,7 @@ const PRODUCT_FILTER_CONDITIONS = `
   && ($categorySlug == "" || category->slug.current == $categorySlug)
   && ($fuelType == "" || fuelType == $fuelType)
   && ($transmission == "" || transmission == $transmission)
+  && ($origin == "" || origin == $origin)
   && ($minPrice == 0 || price >= $minPrice)
   && ($maxPrice == 0 || price <= $maxPrice)
   && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*" || category->title match $searchQuery + "*")
@@ -40,6 +41,7 @@ const FILTERED_PRODUCT_PROJECTION = `{
   fuelType,
   engine,
   transmission,
+  origin,
 
   location,
   mileage,
@@ -89,6 +91,7 @@ export const ALL_PRODUCTS_QUERY = defineQuery(`*[
   fuelType,
   engine,
   transmission,
+  origin,
 
   location,
   mileage,
@@ -129,6 +132,7 @@ export const FEATURED_PRODUCTS_QUERY = defineQuery(`*[
   fuelType,
   engine,
   transmission,
+  origin,
 
   location,
   mileage,
@@ -164,6 +168,7 @@ export const PRODUCTS_BY_CATEGORY_QUERY = defineQuery(`*[
   year,
   fuelType,
   transmission,
+  origin,
   stock
 }`);
 
@@ -198,6 +203,7 @@ export const PRODUCT_BY_SLUG_QUERY = defineQuery(`*[
   fuelType,
   engine,
   transmission,
+  origin,
 
   location,
   mileage,
@@ -250,6 +256,7 @@ export const SEARCH_PRODUCTS_QUERY = defineQuery(`*[
   year,
   fuelType,
   transmission,
+  origin,
 
   location,
   mileage,
@@ -380,6 +387,7 @@ export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
   && ($categorySlug == "" || category->slug.current == $categorySlug)
   && ($fuelType == "" || fuelType == $fuelType)
   && ($transmission == "" || transmission == $transmission)
+  && ($origin == "" || origin == $origin)
   && ($minPrice == 0 || price >= $minPrice)
   && ($maxPrice == 0 || price <= $maxPrice)
 ] | order(year desc, name asc) [0...20] {
@@ -404,6 +412,7 @@ export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
   fuelType,
   engine,
   transmission,
+  origin,
 
   location,
   mileage,

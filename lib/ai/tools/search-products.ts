@@ -4,7 +4,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { AI_SEARCH_PRODUCTS_QUERY } from "@/lib/sanity/queries/products";
 import { formatPrice } from "@/lib/utils";
 import { getStockStatus, getStockMessage } from "@/lib/constants/stock";
-import { FUEL_TYPE_VALUES, TRANSMISSION_VALUES } from "@/lib/constants/filters";
+import { FUEL_TYPE_VALUES, TRANSMISSION_VALUES, ORIGIN_TYPE_VALUES } from "@/lib/constants/filters";
 import type { AI_SEARCH_PRODUCTS_QUERYResult } from "@/sanity.types";
 import type { SearchProduct } from "@/lib/ai/types";
 
@@ -33,6 +33,11 @@ const productSearchSchema = z.object({
     .optional()
     .default("")
     .describe("Filter by transmission type"),
+  origin: z
+    .enum(["", ...ORIGIN_TYPE_VALUES])
+    .optional()
+    .default("")
+    .describe("Filter by origin (e.g., 'locally_used', 'foreign_used', 'brand_new')"),
   minPrice: z
     .number()
     .optional()
@@ -49,12 +54,13 @@ export const searchProductsTool = tool({
   description:
     "Search for cars in the dealership. Can search by name, make, or description, and filter by body type, fuel type, transmission, and price range. Returns car details including availability.",
   inputSchema: productSearchSchema,
-  execute: async ({ query, category, fuelType, transmission, minPrice, maxPrice }) => {
+  execute: async ({ query, category, fuelType, transmission, origin, minPrice, maxPrice }) => {
     console.log("[SearchProducts] Query received:", {
       query,
       category,
       fuelType,
       transmission,
+      origin,
       minPrice,
       maxPrice,
     });
@@ -67,6 +73,7 @@ export const searchProductsTool = tool({
           categorySlug: category || "",
           fuelType: fuelType || "",
           transmission: transmission || "",
+          origin: origin || "",
           minPrice: minPrice || 0,
           maxPrice: maxPrice || 0,
         },
@@ -85,6 +92,7 @@ export const searchProductsTool = tool({
             category,
             fuelType,
             transmission,
+            origin,
             minPrice,
             maxPrice,
           },

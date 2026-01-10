@@ -90,6 +90,14 @@ export function ProductInfo({ product }: ProductInfoProps) {
             </span>
           </div>
         )}
+        {product.origin && (
+          <div className="flex justify-between text-sm">
+            <span className="text-zinc-500 dark:text-zinc-400">Origin</span>
+            <span className="font-medium capitalize text-zinc-900 dark:text-zinc-100">
+              {product.origin}
+            </span>
+          </div>
+        )}
         {product.location && (
           <div className="flex justify-between text-sm">
             <span className="text-zinc-500 dark:text-zinc-400">Location</span>

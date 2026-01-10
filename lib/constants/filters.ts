@@ -68,3 +68,10 @@ export const TRANSMISSION_VALUES = TRANSMISSIONS.map((t) => t.value) as [
   TransmissionValue,
   ...TransmissionValue[],
 ];
+
+/** Origin type values array for zod enums or validation */
+export const ORIGIN_TYPE_VALUES = ORIGIN_TYPES.map((o) => o.value) as [
+  OriginValue,
+  ...OriginValue[],
+];
+

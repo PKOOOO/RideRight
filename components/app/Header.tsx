@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Package, ShoppingBag, Sparkles, User, Menu } from "lucide-react";
@@ -20,6 +21,8 @@ export function Header() {
   const { openChat } = useChatActions();
   const isChatOpen = useIsChatOpen();
   const totalItems = useTotalItems();
+
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/80">
@@ -74,7 +77,7 @@ export function Header() {
           {!isChatOpen && (
             <Button
               onClick={openChat}
-              className="gap-2 bg-gradient-to-r from-red-500 to-red-500 text-white shadow-md shadow-red-200/50 transition-all hover:from-red-600 hover:to-red-600 hover:shadow-lg hover:shadow-red-300/50 dark:shadow-red-900/30 dark:hover:shadow-red-800/40"
+              className="gap-2 bg-gradient-to-r from-red-500 to-red-500 text-white shadow-md shadow-red-200/50 transition-all hover:from-red-600 hover:to-red-600 hover:shadow-lg hover:shadow-red-300/50 dark:shadow-red-900/30 dark:hover:shadow-800/40"
             >
               <Sparkles className="h-4 w-4" />
               <span className="text-sm font-medium">Ask AI</span>
@@ -127,42 +130,72 @@ export function Header() {
 
           {/* Mobile Menu */}
           <div className="md:hidden">
-            <Sheet>
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right">
-                <SheetHeader>
-                  <SheetTitle>Menu</SheetTitle>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px] border-l border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl">
+                <SheetHeader className="text-left border-b border-zinc-200 dark:border-zinc-800 pb-4">
+                  <SheetTitle className="text-xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
+                    Menu
+                  </SheetTitle>
                 </SheetHeader>
-                <div className="mt-6 flex flex-col gap-4">
-                  <Link href="/#about" className="text-lg font-medium">
+                <div className="mt-8 flex flex-col gap-2">
+                  <Link
+                    href="/"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="group flex items-center gap-3 rounded-lg px-3 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+                  >
+                    <span className="h-2 w-2 rounded-full bg-zinc-300 transition-colors group-hover:bg-red-500 dark:bg-zinc-700" />
+                    Home
+                  </Link>
+                  <Link
+                    href="/#about"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="group flex items-center gap-3 rounded-lg px-3 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+                  >
+                    <span className="h-2 w-2 rounded-full bg-zinc-300 transition-colors group-hover:bg-red-500 dark:bg-zinc-700" />
                     About
                   </Link>
-                  <Link href="/#services" className="text-lg font-medium">
+                  <Link
+                    href="/#services"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="group flex items-center gap-3 rounded-lg px-3 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+                  >
+                    <span className="h-2 w-2 rounded-full bg-zinc-300 transition-colors group-hover:bg-red-500 dark:bg-zinc-700" />
                     Services
                   </Link>
-                  <Link href="/#faq" className="text-lg font-medium">
+                  <Link
+                    href="/#faq"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="group flex items-center gap-3 rounded-lg px-3 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+                  >
+                    <span className="h-2 w-2 rounded-full bg-zinc-300 transition-colors group-hover:bg-red-500 dark:bg-zinc-700" />
                     FAQ
                   </Link>
-                  <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800">
-                    <SignedOut>
-                      <SignInButton mode="modal">
-                        <Button className="w-full bg-red-600 hover:bg-red-700 text-white">
-                          Sign In
-                        </Button>
-                      </SignInButton>
-                    </SignedOut>
-                    <SignedIn>
-                      <div className="flex items-center gap-2 mb-4">
-                        <UserButton afterSwitchSessionUrl="/" />
-                        <span className="text-sm font-medium">Account</span>
+
+                  <SignedIn>
+                    <div className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+                      <div className="px-3 mb-2 text-xs font-semibold uppercase text-zinc-400">
+                        Account
                       </div>
-                    </SignedIn>
-                  </div>
+                      <Link
+                        href="/orders"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="group flex items-center gap-3 rounded-lg px-3 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+                      >
+                        <Package className="h-5 w-5 text-zinc-400 transition-colors group-hover:text-red-500" />
+                        My Orders
+                      </Link>
+                      <div className="mt-2 px-3 flex items-center gap-3">
+                        <UserButton afterSwitchSessionUrl="/" />
+                        <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Manage Account</span>
+                      </div>
+                    </div>
+                  </SignedIn>
                 </div>
               </SheetContent>
             </Sheet>

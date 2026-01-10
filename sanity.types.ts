@@ -480,6 +480,7 @@ export type PRODUCT_BY_SLUG_QUERYResult = {
   fuelType: "diesel" | "electric" | "hybrid" | "petrol" | null;
   engine: string | null;
   transmission: "automatic" | "manual" | null;
+  origin: "locally_used" | "imported" | null;
   location: string | null;
   mileage: number | null;
   horsePower: number | null;

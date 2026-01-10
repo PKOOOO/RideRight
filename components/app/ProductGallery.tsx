@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
@@ -31,6 +31,25 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   const scrollNext = useCallback(() => {
     if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    // Scroll hint animation
+    const hintScroll = async () => {
+      // Create a small delay to make sure the user sees it
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      if (emblaApi.canScrollNext()) {
+        emblaApi.scrollNext();
+        setTimeout(() => {
+          emblaApi.scrollPrev();
+        }, 600);
+      }
+    };
+
+    hintScroll();
   }, [emblaApi]);
 
   if (!images || images.length === 0) {
@@ -66,7 +85,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
       {/* Thumbnail Carousel */}
       {images.length > 1 && (
         <div className="relative">
-          <div className="overflow-visible py-1" ref={emblaRef}>
+          <div className="overflow-hidden py-1" ref={emblaRef}>
             <div className="flex -ml-2">
               {images.map((image, index) => (
                 <div
@@ -104,23 +123,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             </div>
           </div>
 
-          {/* Navigation Buttons */}
-          {images.length > 4 && (
-            <>
-              <button
-                className="absolute left-0 top-1/2 -translate-x-1/3 -translate-y-1/2 rounded-full bg-white/80 p-1.5 shadow-md backdrop-blur-sm transition-all hover:bg-white disabled:opacity-0"
-                onClick={scrollPrev}
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/3 rounded-full bg-white/80 p-1.5 shadow-md backdrop-blur-sm transition-all hover:bg-white disabled:opacity-0"
-                onClick={scrollNext}
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </>
-          )}
+
         </div>
       )}
     </div>
