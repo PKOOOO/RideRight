@@ -3,16 +3,10 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Package, ShoppingBag, Sparkles, User, Menu } from "lucide-react";
+import { Package, ShoppingBag, Sparkles, User, Menu, Instagram, Facebook, X } from "lucide-react";
+import { FaXTwitter } from "react-icons/fa6";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { useCartActions, useTotalItems } from "@/lib/store/cart-store-provider";
 import { useChatActions, useIsChatOpen } from "@/lib/store/chat-store-provider";
 
@@ -128,80 +122,104 @@ export function Header() {
             </SignInButton>
           </SignedOut>
 
-          {/* Mobile Menu */}
+          {/* Mobile Menu Trigger */}
           <div className="md:hidden">
-            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px] border-l border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl">
-                <SheetHeader className="text-left border-b border-zinc-200 dark:border-zinc-800 pb-4">
-                  <SheetTitle className="text-xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-                    Menu
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="mt-8 flex flex-col gap-2">
-                  <Link
-                    href="/"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="group flex items-center gap-3 rounded-lg px-3 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
-                  >
-                    <span className="h-2 w-2 rounded-full bg-zinc-300 transition-colors group-hover:bg-red-500 dark:bg-zinc-700" />
-                    Home
-                  </Link>
-                  <Link
-                    href="/#about"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="group flex items-center gap-3 rounded-lg px-3 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
-                  >
-                    <span className="h-2 w-2 rounded-full bg-zinc-300 transition-colors group-hover:bg-red-500 dark:bg-zinc-700" />
-                    About
-                  </Link>
-                  <Link
-                    href="/#services"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="group flex items-center gap-3 rounded-lg px-3 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
-                  >
-                    <span className="h-2 w-2 rounded-full bg-zinc-300 transition-colors group-hover:bg-red-500 dark:bg-zinc-700" />
-                    Services
-                  </Link>
-                  <Link
-                    href="/#faq"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="group flex items-center gap-3 rounded-lg px-3 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
-                  >
-                    <span className="h-2 w-2 rounded-full bg-zinc-300 transition-colors group-hover:bg-red-500 dark:bg-zinc-700" />
-                    FAQ
-                  </Link>
-
-                  <SignedIn>
-                    <div className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-800">
-                      <div className="px-3 mb-2 text-xs font-semibold uppercase text-zinc-400">
-                        Account
-                      </div>
-                      <Link
-                        href="/orders"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="group flex items-center gap-3 rounded-lg px-3 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
-                      >
-                        <Package className="h-5 w-5 text-zinc-400 transition-colors group-hover:text-red-500" />
-                        My Orders
-                      </Link>
-                      <div className="mt-2 px-3 flex items-center gap-3">
-                        <UserButton afterSwitchSessionUrl="/" />
-                        <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Manage Account</span>
-                      </div>
-                    </div>
-                  </SignedIn>
-                </div>
-              </SheetContent>
-            </Sheet>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+              <span className="sr-only">Toggle menu</span>
+            </Button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      <div
+        className={`absolute top-full left-0 z-40 w-full border-b border-zinc-200 bg-white/95 backdrop-blur-xl transition-all duration-300 ease-in-out dark:border-zinc-800 dark:bg-zinc-950/95 ${isMobileMenuOpen
+          ? "translate-y-0 opacity-100 visible"
+          : "-translate-y-4 opacity-0 invisible"
+          }`}
+      >
+        <div className="flex flex-col p-6 space-y-6 max-h-[80vh] overflow-y-auto items-center text-center">
+          <div className="flex flex-col gap-2 w-full max-w-[200px]">
+            <Link
+              href="/"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="group flex items-center justify-center gap-3 rounded-lg px-4 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+            >
+              Home
+            </Link>
+            <Link
+              href="/#about"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="group flex items-center justify-center gap-3 rounded-lg px-4 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+            >
+              About
+            </Link>
+            <Link
+              href="/#services"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="group flex items-center justify-center gap-3 rounded-lg px-4 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+            >
+              Services
+            </Link>
+            <Link
+              href="/#faq"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="group flex items-center justify-center gap-3 rounded-lg px-4 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+            >
+              FAQ
+            </Link>
+          </div>
+
+          <SignedIn>
+            <div className="pb-4 w-full max-w-[200px] border-b border-zinc-200 dark:border-zinc-800">
+              <Link
+                href="/orders"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="group flex items-center justify-center gap-3 rounded-lg px-4 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+              >
+                <Package className="h-5 w-5 text-zinc-400 transition-colors group-hover:text-red-500" />
+                My Orders
+              </Link>
+              <div className="mt-2 flex items-center justify-center gap-3">
+                <UserButton afterSwitchSessionUrl="/" />
+              </div>
+            </div>
+          </SignedIn>
+
+          {/* Social Icons */}
+          <div className="flex items-center gap-6 pt-2">
+            <a href="#" className="text-red-500 hover:text-red-600 transition-colors">
+              <Instagram className="h-6 w-6" />
+              <span className="sr-only">Instagram</span>
+            </a>
+            <a href="#" className="text-red-500 hover:text-red-600 transition-colors">
+              <FaXTwitter className="h-6 w-6" />
+              <span className="sr-only">X (Twitter)</span>
+            </a>
+            <a href="#" className="text-red-500 hover:text-red-600 transition-colors">
+              <Facebook className="h-6 w-6" />
+              <span className="sr-only">Facebook</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Backdrop */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 top-16 z-30 bg-black/20 backdrop-blur-sm md:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
     </header>
   );
 }

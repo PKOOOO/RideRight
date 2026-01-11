@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Grid2x2 } from "lucide-react";
 import type { ALL_CATEGORIES_QUERYResult } from "@/sanity.types";
 
 interface CategoryTilesProps {
@@ -22,27 +21,54 @@ export function CategoryTiles({
         <Link
           href="/"
           className={`group relative flex-shrink-0 overflow-hidden rounded-xl transition-all duration-300 ${!activeCategory
-              ? "ring-2 ring-red-500 ring-offset-2 dark:ring-offset-zinc-900"
-              : "hover:ring-2 hover:ring-zinc-300 hover:ring-offset-2 dark:hover:ring-zinc-600 dark:hover:ring-offset-zinc-900"
+            ? "ring-2 ring-red-500 ring-offset-2 dark:ring-offset-zinc-900"
+            : "hover:ring-2 hover:ring-zinc-300 hover:ring-offset-2 dark:hover:ring-zinc-600 dark:hover:ring-offset-zinc-900"
             }`}
         >
-          <div className="relative h-32 w-56 sm:h-56 sm:w-80">
-            {/* Gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-900 dark:from-zinc-700 dark:to-zinc-800" />
-
-            {/* Icon */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Grid2x2 className="h-12 w-12 text-white/60 transition-transform duration-300 group-hover:scale-110" />
+          <div className="relative h-32 w-56 sm:h-56 sm:w-80 overflow-hidden bg-zinc-700">
+            {/* Background Marquee of Logos */}
+            <div className="absolute inset-0 flex flex-col gap-4 opacity-70 transition-opacity duration-700 group-hover:opacity-60">
+              {/* Row 1 - Scrolling Left */}
+              <div className="flex animate-marquee gap-8 whitespace-nowrap py-2">
+                {[...categories, ...categories, ...categories, ...categories].map((cat, i) => (
+                  <div key={i} className="relative h-12 w-20 flex-shrink-0">
+                    {cat.image?.asset?.url && (
+                      <Image
+                        src={cat.image.asset.url}
+                        alt=""
+                        fill
+                        className="object-contain"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+              {/* Row 2 - Scrolling Left (offset) - Optional, filling space */}
+              <div className="flex animate-marquee gap-8 whitespace-nowrap pl-12">
+                {[...categories, ...categories, ...categories, ...categories].reverse().map((cat, i) => (
+                  <div key={i} className="relative h-12 w-20 flex-shrink-0">
+                    {cat.image?.asset?.url && (
+                      <Image
+                        src={cat.image.asset.url}
+                        alt=""
+                        fill
+                        className="object-contain"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Dark overlay for text */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            {/* Gradient Overlay for Readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/90 via-zinc-900/40 to-transparent" />
 
             {/* Category name */}
             <div className="absolute inset-x-0 bottom-0 p-4">
-              <span className="text-base font-semibold text-white drop-shadow-md">
-                All Cars
-              </span>
+
+              <p className="text-xs font-bold text-zinc-200">
+                View all models
+              </p>
             </div>
           </div>
         </Link>
@@ -57,8 +83,8 @@ export function CategoryTiles({
               key={category._id}
               href={`/?category=${category.slug}`}
               className={`group relative flex-shrink-0 overflow-hidden rounded-xl transition-all duration-300 ${isActive
-                  ? "ring-2 ring-red-500 ring-offset-2 dark:ring-offset-zinc-900"
-                  : "hover:ring-2 hover:ring-zinc-300 hover:ring-offset-2 dark:hover:ring-zinc-600 dark:hover:ring-offset-zinc-900"
+                ? "ring-2 ring-red-500 ring-offset-2 dark:ring-offset-zinc-900"
+                : "hover:ring-2 hover:ring-zinc-300 hover:ring-offset-2 dark:hover:ring-zinc-600 dark:hover:ring-offset-zinc-900"
                 }`}
             >
               <div className="relative h-32 w-56 sm:h-56 sm:w-80">
