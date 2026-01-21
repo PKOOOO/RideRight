@@ -103,10 +103,11 @@ export const productType = defineType({
     }),
     defineField({
       name: "origin",
-      title: "Origin",
+      title: "Vehicle condition",
       type: "string",
       group: "details",
-      description: "Whether the vehicle is locally used or imported",
+      description:
+        "Overall vehicle condition, e.g. locally used, import on behalf, foreign used (in stock or soon arriving)",
       options: {
         list: ORIGIN_TYPES_SANITY_LIST,
         layout: "radio",

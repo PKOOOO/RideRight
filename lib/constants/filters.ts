@@ -16,8 +16,13 @@ export const TRANSMISSIONS = [
 ] as const;
 
 export const ORIGIN_TYPES = [
-  { value: "locally_used", label: "Locally Used" },
-  { value: "imported", label: "Imported" },
+  { value: "locally_used", label: "Locally used" },
+  // Keep the underlying value "imported" for backwards compatibility with existing Sanity data,
+  // but change the label shown in the UI.
+  { value: "imported", label: "Import on behalf" },
+  // New vehicle condition states for foreign used cars
+  { value: "foreign_used_in_stock", label: "Foreign used – In stock" },
+  { value: "foreign_used_soon_arriving", label: "Foreign used – Soon arriving" },
 ] as const;
 
 export const SORT_OPTIONS = [

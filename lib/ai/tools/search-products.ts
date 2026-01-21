@@ -37,7 +37,9 @@ const productSearchSchema = z.object({
     .enum(["", ...ORIGIN_TYPE_VALUES])
     .optional()
     .default("")
-    .describe("Filter by origin (e.g., 'locally_used', 'foreign_used', 'brand_new')"),
+    .describe(
+      "Filter by vehicle condition (e.g., 'locally_used', 'imported', 'foreign_used_in_stock', 'foreign_used_soon_arriving')"
+    ),
   minPrice: z
     .number()
     .optional()

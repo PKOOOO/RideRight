@@ -292,10 +292,10 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
         </Select>
       </div>
 
-      {/* Origin */}
+      {/* Vehicle Condition (Origin) */}
       <div>
         <FilterLabel isActive={isOriginActive} filterKey="origin">
-          Origin
+          Vehicle condition
         </FilterLabel>
         <Select
           value={currentOrigin || "all"}
@@ -310,10 +310,10 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
                 : ""
             }
           >
-            <SelectValue placeholder="All Origins" />
+            <SelectValue placeholder="All Vehicle Conditions" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Origins</SelectItem>
+            <SelectItem value="all">All Vehicle Conditions</SelectItem>
             {ORIGIN_TYPES.map((origin) => (
               <SelectItem key={origin.value} value={origin.value}>
                 {origin.label}
