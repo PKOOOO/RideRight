@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn, formatPrice } from "@/lib/utils";
 import { AddToCartButton } from "@/components/app/AddToCartButton";
-import { StockBadge } from "@/components/app/StockBadge";
+import { ORIGIN_TYPES } from "@/lib/constants/filters";
 import type { FILTER_PRODUCTS_BY_NAME_QUERYResult } from "@/sanity.types";
 
 type Product = FILTER_PRODUCTS_BY_NAME_QUERYResult[number];
@@ -31,6 +31,15 @@ export function ProductCard({ product }: ProductCardProps) {
   const stock = product.stock ?? 0;
   const isOutOfStock = stock <= 0;
   const hasMultipleImages = images.length > 1;
+
+  // Get vehicle condition label from origin
+  const getVehicleConditionLabel = (origin: string | null | undefined): string | null => {
+    if (!origin) return null;
+    const originType = ORIGIN_TYPES.find((type) => type.value === origin);
+    return originType?.label ?? null;
+  };
+
+  const vehicleCondition = getVehicleConditionLabel(product.origin);
 
   return (
     <Card className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border-0 bg-white p-0 shadow-sm ring-1 ring-zinc-950/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-zinc-950/10 dark:bg-zinc-900 dark:ring-white/10 dark:hover:shadow-zinc-950/50">
@@ -77,11 +86,6 @@ export function ProductCard({ product }: ProductCardProps) {
               Out of Stock
             </Badge>
           )}
-          {product.category && (
-            <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-zinc-700 shadow-sm backdrop-blur-sm dark:bg-zinc-900/90 dark:text-zinc-300">
-              {product.category.title}
-            </span>
-          )}
         </div>
       </Link>
 
@@ -125,7 +129,14 @@ export function ProductCard({ product }: ProductCardProps) {
           <p className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
             {formatPrice(product.price)}
           </p>
-          <StockBadge productId={product._id} stock={stock} />
+          {vehicleCondition && (
+            <Badge
+              variant="secondary"
+              className="w-fit bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-200"
+            >
+              {vehicleCondition}
+            </Badge>
+          )}
         </div>
       </CardContent>
 

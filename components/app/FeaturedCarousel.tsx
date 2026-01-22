@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn, formatPrice } from "@/lib/utils";
+import { ORIGIN_TYPES } from "@/lib/constants/filters";
 import type { FEATURED_PRODUCTS_QUERYResult } from "@/sanity.types";
 
 type FeaturedProduct = FEATURED_PRODUCTS_QUERYResult[number];
@@ -111,6 +112,15 @@ interface FeaturedSlideProps {
 function FeaturedSlide({ product }: FeaturedSlideProps) {
   const mainImage = product.images?.[0]?.asset?.url;
 
+  // Get vehicle condition label from origin
+  const getVehicleConditionLabel = (origin: string | null | undefined): string | null => {
+    if (!origin) return null;
+    const originType = ORIGIN_TYPES.find((type) => type.value === origin);
+    return originType?.label ?? null;
+  };
+
+  const vehicleCondition = getVehicleConditionLabel(product.origin);
+
   return (
     <div className="flex min-h-[400px] flex-col md:min-h-[450px] md:flex-row lg:min-h-[500px]">
       {/* Image Section - Left side (60% on desktop) */}
@@ -137,12 +147,12 @@ function FeaturedSlide({ product }: FeaturedSlideProps) {
 
       {/* Content Section - Right side (40% on desktop) */}
       <div className="flex w-full flex-col justify-center px-6 py-8 md:w-2/5 md:px-10 lg:px-16">
-        {product.category && (
+        {vehicleCondition && (
           <Badge
             variant="secondary"
             className="mb-16 w-fit bg-red-500/20 text-red-400 hover:bg-red-500/30"
           >
-            {product.category.title}
+            {vehicleCondition}
           </Badge>
         )}
 
