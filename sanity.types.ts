@@ -425,6 +425,7 @@ export type FEATURED_PRODUCTS_QUERYResult = Array<{
   fuelType: "diesel" | "electric" | "hybrid" | "petrol" | null;
   engine: string | null;
   transmission: "automatic" | "manual" | null;
+  origin: "locally_used" | "imported" | "foreign_used_in_stock" | "foreign_used_soon_arriving" | null;
   location: string | null;
   mileage: number | null;
   horsePower: number | null;
@@ -540,6 +541,7 @@ export type FILTER_PRODUCTS_BY_NAME_QUERYResult = Array<{
   fuelType: "diesel" | "electric" | "hybrid" | "petrol" | null;
   engine: string | null;
   transmission: "automatic" | "manual" | null;
+  origin: "locally_used" | "imported" | "foreign_used_in_stock" | "foreign_used_soon_arriving" | null;
   location: string | null;
   mileage: number | null;
   horsePower: number | null;
@@ -569,6 +571,7 @@ export type FILTER_PRODUCTS_BY_PRICE_ASC_QUERYResult = Array<{
   fuelType: "diesel" | "electric" | "hybrid" | "petrol" | null;
   engine: string | null;
   transmission: "automatic" | "manual" | null;
+  origin: "locally_used" | "imported" | "foreign_used_in_stock" | "foreign_used_soon_arriving" | null;
   location: string | null;
   mileage: number | null;
   horsePower: number | null;
@@ -598,6 +601,7 @@ export type FILTER_PRODUCTS_BY_PRICE_DESC_QUERYResult = Array<{
   fuelType: "diesel" | "electric" | "hybrid" | "petrol" | null;
   engine: string | null;
   transmission: "automatic" | "manual" | null;
+  origin: "locally_used" | "imported" | "foreign_used_in_stock" | "foreign_used_soon_arriving" | null;
   location: string | null;
   mileage: number | null;
   horsePower: number | null;
@@ -627,6 +631,7 @@ export type FILTER_PRODUCTS_BY_YEAR_DESC_QUERYResult = Array<{
   fuelType: "diesel" | "electric" | "hybrid" | "petrol" | null;
   engine: string | null;
   transmission: "automatic" | "manual" | null;
+  origin: "locally_used" | "imported" | "foreign_used_in_stock" | "foreign_used_soon_arriving" | null;
   location: string | null;
   mileage: number | null;
   horsePower: number | null;
