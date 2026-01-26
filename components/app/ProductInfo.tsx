@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { AddToCartButton } from "@/components/app/AddToCartButton";
 import { AskAISimilarButton } from "@/components/app/AskAISimilarButton";
-import { StockBadge } from "@/components/app/StockBadge";
+import { Badge } from "@/components/ui/badge";
+import { ORIGIN_TYPES } from "@/lib/constants/filters";
 import { formatPrice } from "@/lib/utils";
 import type { PRODUCT_BY_SLUG_QUERYResult } from "@/sanity.types";
 
@@ -11,6 +12,15 @@ interface ProductInfoProps {
 
 export function ProductInfo({ product }: ProductInfoProps) {
   const imageUrl = product.images?.[0]?.asset?.url;
+
+  // Get vehicle condition label from origin
+  const getVehicleConditionLabel = (origin: string | null | undefined): string | null => {
+    if (!origin) return null;
+    const originType = ORIGIN_TYPES.find((type) => type.value === origin);
+    return originType?.label ?? null;
+  };
+
+  const vehicleCondition = getVehicleConditionLabel(product.origin);
 
   return (
     <div className="flex flex-col">
@@ -41,9 +51,16 @@ export function ProductInfo({ product }: ProductInfoProps) {
         </p>
       )}
 
-      {/* Stock & Add to Cart */}
+      {/* Vehicle Condition & Add to Cart */}
       <div className="mt-6 flex flex-col gap-3">
-        <StockBadge productId={product._id} stock={product.stock ?? 0} />
+        {vehicleCondition && (
+          <Badge
+            variant="secondary"
+            className="w-fit bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-200"
+          >
+            {vehicleCondition}
+          </Badge>
+        )}
         <AddToCartButton
           productId={product._id}
           name={product.name ?? "Unknown Car"}
