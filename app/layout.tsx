@@ -13,8 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Motors",
-  description: "Motors Marketplace",
+  title: "RideRight",
+  description: "RideRight - Your Ride, Your Way",
+  icons: {
+    icon: "/loggo.png",
+    apple: "/loggo.png",
+  },
 };
 
 export default function RootLayout({
