@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, HelpCircle, ShieldCheck, Truck, CreditCard, PenTool, Calendar, Star, Globe } from "lucide-react";
+import { ChevronDown, ShieldCheck, Truck, CreditCard, PenTool, Calendar, Star, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
     Collapsible,
@@ -9,6 +9,7 @@ import {
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const faqs = [
     {
@@ -65,6 +66,9 @@ const faqs = [
 
 export function FAQSection() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
+    const [showAll, setShowAll] = useState(false);
+
+    const visibleFaqs = showAll ? faqs : faqs.slice(0, 5);
 
     return (
         <section id="faq" className="scroll-mt-20 py-12 sm:py-16 lg:py-20 bg-zinc-50 dark:bg-zinc-950">
@@ -80,7 +84,7 @@ export function FAQSection() {
 
                 <Card className="overflow-hidden border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 shadow-xl shadow-zinc-200/50 dark:shadow-none rounded-2xl">
                     <div className="p-2 sm:p-4">
-                        {faqs.map((faq, index) => {
+                        {visibleFaqs.map((faq, index) => {
                             const isOpen = openIndex === index;
                             const Icon = faq.icon;
 
@@ -126,6 +130,25 @@ export function FAQSection() {
                             );
                         })}
                     </div>
+
+                    {/* Show more/less button */}
+                    {faqs.length > 5 && (
+                        <div className="border-t border-zinc-200 p-4 dark:border-zinc-800">
+                            <Button
+                                variant="ghost"
+                                onClick={() => setShowAll(!showAll)}
+                                className="w-full text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                            >
+                                {showAll ? "Show Less" : `Show ${faqs.length - 5} More Questions`}
+                                <ChevronDown
+                                    className={cn(
+                                        "ml-2 h-4 w-4 transition-transform",
+                                        showAll && "rotate-180"
+                                    )}
+                                />
+                            </Button>
+                        </div>
+                    )}
                 </Card>
             </div>
         </section>

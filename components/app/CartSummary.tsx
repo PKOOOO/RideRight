@@ -23,7 +23,7 @@ export function CartSummary({ hasStockIssues = false }: CartSummaryProps) {
   if (totalItems === 0) return null;
 
   const handleWhatsAppClick = () => {
-    const phoneNumber = "254741535521";
+    const phoneNumber = "254796611116";
     const baseUrl = window.location.origin;
 
     let message = "Hi I'm interested in the ";

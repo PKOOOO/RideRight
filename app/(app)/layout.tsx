@@ -3,6 +3,7 @@ import { SanityLive } from "@/sanity/lib/live";
 import { CartStoreProvider } from "@/lib/store/cart-store-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/app/Header";
+import { Footer } from "@/components/app/Footer";
 import { ChatStoreProvider } from "@/lib/store/chat-store-provider";
 import { CartSheet } from "@/components/app/CartSheet";
 import { ChatSheet } from "@/components/app/ChatSheet";
@@ -17,6 +18,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
           <AppShell>
             <Header />
             <main>{children}</main>
+            <Footer />
           </AppShell>
           <CartSheet />
           <ChatSheet />
