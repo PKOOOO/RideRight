@@ -17,7 +17,7 @@ export function Footer() {
               RideRight
             </span>
             <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-              Your Ride, Your Way
+              Live Right, Drive Right
             </p>
           </div>
 
