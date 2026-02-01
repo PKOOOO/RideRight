@@ -15,6 +15,7 @@ import { FeaturedCarousel } from "@/components/app/FeaturedCarousel";
 import { FeaturedCarouselSkeleton } from "@/components/app/FeaturedCarouselSkeleton";
 import { FAQSection } from "@/components/app/FAQSection";
 import { AboutSection } from "@/components/app/AboutSection";
+import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/seo/JsonLd";
 
 interface PageProps {
   searchParams: Promise<{
@@ -91,6 +92,10 @@ export default async function HomePage({ searchParams }: PageProps) {
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
+      {/* SEO Structured Data */}
+      <OrganizationJsonLd />
+      <WebsiteJsonLd />
+
       {/* Featured Cars Carousel */}
       {featuredProducts.length > 0 && (
         <Suspense fallback={<FeaturedCarouselSkeleton />}>
