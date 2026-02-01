@@ -5,9 +5,9 @@ export function OrganizationJsonLd() {
     name: "RideRight Autos Ltd",
     description:
       "Your trusted partner for premium vehicles in Kenya. We offer end-to-end vehicle import services, locally used cars, and expert consultation.",
-    url: "https://rideright.ke",
-    logo: "https://rideright.ke/loggo.png",
-    image: "https://rideright.ke/loggo.png",
+    url: "https://www.rideright.ke",
+    logo: "https://www.rideright.ke/loggo.png",
+    image: "https://www.rideright.ke/loggo.png",
     telephone: "+254796611116",
     address: {
       "@type": "PostalAddress",
@@ -95,7 +95,7 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     name: product.name,
     description: product.description,
     image: imageUrl,
-    url: `https://rideright.ke/products/${product.slug}`,
+    url: `https://www.rideright.ke/products/${product.slug}`,
     vehicleModelDate: product.year?.toString(),
     fuelType: product.fuelType,
     vehicleTransmission: product.transmission,
@@ -117,7 +117,7 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
       seller: {
         "@type": "AutoDealer",
         name: "RideRight Autos Ltd",
-        url: "https://rideright.ke",
+        url: "https://www.rideright.ke",
       },
     },
   };
@@ -135,12 +135,12 @@ export function WebsiteJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "RideRight",
-    url: "https://rideright.ke",
+    url: "https://www.rideright.ke",
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: "https://rideright.ke/?q={search_term_string}",
+        urlTemplate: "https://www.rideright.ke/?q={search_term_string}",
       },
       "query-input": "required name=search_term_string",
     },

@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = "https://rideright.ke";
+const siteUrl = "https://www.rideright.ke";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

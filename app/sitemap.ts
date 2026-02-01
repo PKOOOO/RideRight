@@ -8,7 +8,7 @@ const client = createClient({
   useCdn: true,
 });
 
-const siteUrl = "https://rideright.ke";
+const siteUrl = "https://www.rideright.ke";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch all products for dynamic routes

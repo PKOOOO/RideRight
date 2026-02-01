@@ -39,7 +39,7 @@ export async function generateMetadata({
       title: `${product.name} | RideRight`,
       description: product.description || `${product.name} for sale at RideRight Autos Kenya. ${price}`,
       type: "website",
-      url: `https://rideright.ke/products/${slug}`,
+      url: `https://www.rideright.ke/products/${slug}`,
       images: imageUrl
         ? [
             {
