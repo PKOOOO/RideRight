@@ -107,7 +107,7 @@ export const productType = defineType({
       type: "string",
       group: "details",
       description:
-        "Overall vehicle condition, e.g. locally used, import on behalf, foreign used (in stock or soon arriving)",
+        "Overall vehicle condition, e.g. locally used, available for import, foreign used (in stock or arriving soon)",
       options: {
         list: ORIGIN_TYPES_SANITY_LIST,
         layout: "radio",

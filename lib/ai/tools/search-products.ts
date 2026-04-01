@@ -38,7 +38,7 @@ const productSearchSchema = z.object({
     .optional()
     .default("")
     .describe(
-      "Filter by vehicle condition (e.g., 'locally_used', 'imported', 'foreign_used_in_stock', 'foreign_used_soon_arriving')"
+      "Filter by vehicle condition (e.g., 'locally_used' for Locally Used, 'imported' for Available for Import, 'foreign_used_in_stock' for Foreign Used In Stock, 'foreign_used_soon_arriving' for Arriving Soon)"
     ),
   minPrice: z
     .number()

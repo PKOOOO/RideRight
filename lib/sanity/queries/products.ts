@@ -11,7 +11,7 @@ const PRODUCT_FILTER_CONDITIONS = `
   && ($categorySlug == "" || category->slug.current == $categorySlug)
   && ($fuelType == "" || fuelType == $fuelType)
   && ($transmission == "" || transmission == $transmission)
-  && ($origin == "" || origin == $origin)
+  && ($origin == "" || origin == $origin || ($origin == "foreign_used" && origin in ["foreign_used_in_stock", "foreign_used_soon_arriving"]))
   && ($minPrice == 0 || price >= $minPrice)
   && ($maxPrice == 0 || price <= $maxPrice)
   && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*" || category->title match $searchQuery + "*")
@@ -387,7 +387,7 @@ export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
   && ($categorySlug == "" || category->slug.current == $categorySlug)
   && ($fuelType == "" || fuelType == $fuelType)
   && ($transmission == "" || transmission == $transmission)
-  && ($origin == "" || origin == $origin)
+  && ($origin == "" || origin == $origin || ($origin == "foreign_used" && origin in ["foreign_used_in_stock", "foreign_used_soon_arriving"]))
   && ($minPrice == 0 || price >= $minPrice)
   && ($maxPrice == 0 || price <= $maxPrice)
 ] | order(year desc, name asc) [0...20] {

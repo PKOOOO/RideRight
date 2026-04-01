@@ -11,6 +11,7 @@ import {
 import { ALL_CATEGORIES_QUERY } from "@/lib/sanity/queries/categories";
 import { ProductSection } from "@/components/app/ProductSection";
 import { CategoryTiles } from "@/components/app/CategoryTiles";
+import { OriginTabs } from "@/components/app/OriginTabs";
 import { FeaturedCarousel } from "@/components/app/FeaturedCarousel";
 import { FeaturedCarouselSkeleton } from "@/components/app/FeaturedCarouselSkeleton";
 import { FAQSection } from "@/components/app/FAQSection";
@@ -42,7 +43,10 @@ export default async function HomePage({ searchParams }: PageProps) {
   const maxPrice = Number(params.maxPrice) || 0;
   const sort = params.sort ?? "name";
   const inStock = params.inStock === "true";
-  const origin = params.origin ?? "";
+  // Default to "imported" (Available for Import) when no origin tab is selected
+  const originParam = params.origin ?? "imported";
+  // "all" means show everything — pass empty string to GROQ so the filter is skipped
+  const origin = originParam === "all" ? "" : originParam;
 
   // Select query based on sort parameter
   const getQuery = () => {
@@ -120,6 +124,11 @@ export default async function HomePage({ searchParams }: PageProps) {
             categories={categories}
             activeCategory={categorySlug || undefined}
           />
+        </div>
+
+        {/* Origin Category Tabs */}
+        <div className="mt-4">
+          <OriginTabs activeOrigin={originParam} />
         </div>
       </div>
 

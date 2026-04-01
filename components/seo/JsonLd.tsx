@@ -46,8 +46,8 @@ export function OrganizationJsonLd() {
       itemListElement: [
         {
           "@type": "OfferCatalog",
-          name: "Import on Behalf",
-          description: "Vehicle importation services from Japan, UK, Dubai, and more",
+          name: "Available for Import",
+          description: "Vehicles available for import from Japan, UK, Dubai, and more",
         },
         {
           "@type": "OfferCatalog",
@@ -101,10 +101,10 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     vehicleTransmission: product.transmission,
     mileageFromOdometer: product.mileage
       ? {
-          "@type": "QuantitativeValue",
-          value: product.mileage,
-          unitCode: "KMT",
-        }
+        "@type": "QuantitativeValue",
+        value: product.mileage,
+        unitCode: "KMT",
+      }
       : undefined,
     offers: {
       "@type": "Offer",
