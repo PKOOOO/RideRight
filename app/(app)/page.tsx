@@ -43,8 +43,7 @@ export default async function HomePage({ searchParams }: PageProps) {
   const maxPrice = Number(params.maxPrice) || 0;
   const sort = params.sort ?? "name";
   const inStock = params.inStock === "true";
-  // Default to "imported" (Available for Import) when no origin tab is selected
-  const originParam = params.origin ?? "imported";
+  const originParam = params.origin ?? "all";
   // "all" means show everything — pass empty string to GROQ so the filter is skipped
   const origin = originParam === "all" ? "" : originParam;
 

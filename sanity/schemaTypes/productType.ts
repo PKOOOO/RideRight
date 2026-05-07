@@ -183,11 +183,13 @@ export const productType = defineType({
       media: "images.0",
       price: "price",
       year: "year",
+      stock: "stock",
     },
-    prepare({ title, subtitle, media, price, year }) {
+    prepare({ title, subtitle, media, price, year, stock }) {
+      const stockLabel = stock <= 0 ? " • SOLD OUT" : "";
       return {
         title,
-        subtitle: `${subtitle ?? ""} ${year ?? ""} • KES ${(price ?? 0).toLocaleString()}`,
+        subtitle: `${subtitle ?? ""} ${year ?? ""} • KES ${(price ?? 0).toLocaleString()}${stockLabel}`,
         media,
       };
     },

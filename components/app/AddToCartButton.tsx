@@ -47,7 +47,7 @@ export function AddToCartButton({
         variant="secondary"
         className={cn("h-11 w-full", className)}
       >
-        Out of Stock
+        Sold Out
       </Button>
     );
   }
