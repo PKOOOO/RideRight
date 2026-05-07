@@ -83,7 +83,7 @@ export function ProductCard({ product }: ProductCardProps) {
               variant="destructive"
               className="absolute right-3 top-3 rounded-full px-3 py-1 text-xs font-medium shadow-lg"
             >
-              Sold Out
+              Sold
             </Badge>
           )}
         </div>

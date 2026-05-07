@@ -42,7 +42,7 @@ export const getStockMessage = (stock: number | null | undefined): string => {
   const status = getStockStatus(stock);
   switch (status) {
     case "out_of_stock":
-      return "SOLD OUT - Currently unavailable";
+      return "SOLD - Currently unavailable";
     case "low_stock":
       return `LOW STOCK - Only ${stock} left`;
     case "in_stock":

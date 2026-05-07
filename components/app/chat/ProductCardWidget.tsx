@@ -63,7 +63,7 @@ export function ProductCardWidget({
                 : "text-red-600 dark:text-red-400"
             }`}
           >
-            {isOutOfStock ? "Sold Out" : "Low stock"}
+            {isOutOfStock ? "Sold" : "Low stock"}
           </span>
         )}
       </div>
