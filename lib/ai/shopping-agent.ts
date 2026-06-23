@@ -176,7 +176,7 @@ export function createShoppingAgent({ userId }: ShoppingAgentOptions) {
   }
 
   return new ToolLoopAgent({
-    model: gateway("anthropic/claude-sonnet-4.5"),
+    model: gateway("anthropic/claude-haiku-4-5"),
     instructions,
     tools,
   });
