@@ -4,12 +4,10 @@ import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Download } from "lucide-react";
 import type { PRODUCT_BY_SLUG_QUERYResult } from "@/sanity.types";
 
-type ProductImages = NonNullable<
-  NonNullable<PRODUCT_BY_SLUG_QUERYResult>["images"]
->;
+type ProductImages = NonNullable<PRODUCT_BY_SLUG_QUERYResult>["images"];
 
 interface ProductGalleryProps {
   images: ProductImages | null;
@@ -35,20 +33,13 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   useEffect(() => {
     if (!emblaApi) return;
-
-    // Scroll hint animation
     const hintScroll = async () => {
-      // Create a small delay to make sure the user sees it
       await new Promise((resolve) => setTimeout(resolve, 800));
-
       if (emblaApi.canScrollNext()) {
         emblaApi.scrollNext();
-        setTimeout(() => {
-          emblaApi.scrollPrev();
-        }, 600);
+        setTimeout(() => emblaApi.scrollPrev(), 600);
       }
     };
-
     hintScroll();
   }, [emblaApi]);
 
@@ -61,20 +52,89 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   }
 
   const selectedImage = images[selectedIndex];
+  const selectedImageUrl = selectedImage?.asset?.url;
+
+  const handleDownload = async () => {
+    if (!selectedImageUrl) return;
+    const filename = `${productName ?? "car"}-image-${selectedIndex + 1}.jpg`
+      .toLowerCase()
+      .replace(/\s+/g, "-");
+    try {
+      const response = await fetch(selectedImageUrl);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      window.open(selectedImageUrl, "_blank");
+    }
+  };
+
+  const handleDownloadAll = async () => {
+    if (!images || images.length === 0) return;
+    for (let i = 0; i < images.length; i++) {
+      const url = images[i]?.asset?.url;
+      if (!url) continue;
+      const filename = `${productName ?? "car"}-image-${i + 1}.jpg`
+        .toLowerCase()
+        .replace(/\s+/g, "-");
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = objectUrl;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+        await new Promise((resolve) => setTimeout(resolve, 300));
+      } catch {
+        window.open(url, "_blank");
+      }
+    }
+  };
 
   return (
     <div className="space-y-4">
       {/* Main Image */}
       <div className="relative aspect-[3/2] overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-800">
-        {selectedImage?.asset?.url ? (
-          <Image
-            src={selectedImage.asset.url}
-            alt={productName ?? "Product image"}
-            fill
-            className="object-cover"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            priority
-          />
+        {selectedImageUrl ? (
+          <>
+            <Image
+              src={selectedImageUrl}
+              alt={productName ?? "Product image"}
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              priority
+            />
+            {/* Download buttons */}
+            <div className="absolute bottom-3 right-3 flex gap-2">
+              <button
+                type="button"
+                onClick={handleDownload}
+                title="Download this image"
+                className="flex items-center gap-1.5 rounded-md bg-black/60 px-3 py-1.5 text-xs text-white backdrop-blur-sm transition hover:bg-black/80"
+              >
+                <Download className="h-3.5 w-3.5" />
+                Download
+              </button>
+              {images.length > 1 && (
+                <button
+                  type="button"
+                  onClick={handleDownloadAll}
+                  title="Download all images"
+                  className="flex items-center gap-1.5 rounded-md bg-black/60 px-3 py-1.5 text-xs text-white backdrop-blur-sm transition hover:bg-black/80"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  All ({images.length})
+                </button>
+              )}
+            </div>
+          </>
         ) : (
           <div className="flex h-full items-center justify-center text-zinc-400">
             No image
@@ -122,8 +182,6 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
               ))}
             </div>
           </div>
-
-
         </div>
       )}
     </div>

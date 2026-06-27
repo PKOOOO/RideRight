@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: true,
   images: {
     remotePatterns: [
@@ -14,8 +13,6 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
       },
     ],
-    // Disable optimization to bypass private IP resolution check
-    // Images will load directly from Sanity CDN
     unoptimized: true,
   },
 };

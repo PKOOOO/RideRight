@@ -1,6 +1,7 @@
 import { PackageIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 import { FUEL_TYPES_SANITY_LIST, TRANSMISSIONS_SANITY_LIST, ORIGIN_TYPES_SANITY_LIST } from "@/lib/constants/filters";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 
 export const productType = defineType({
   name: "product",
@@ -59,7 +60,6 @@ export const productType = defineType({
       description: "e.g., Toyota, BMW, Mercedes",
       validation: (rule) => [rule.required().error("Make is required")],
     }),
-
     defineField({
       name: "year",
       title: "Year",
@@ -141,10 +141,16 @@ export const productType = defineType({
       group: "details",
       description: "Engine Torque (Nm)",
     }),
+
+    // ↓ only this field changed
     defineField({
       name: "images",
+      title: "Images",
       type: "array",
       group: "media",
+      components: {
+        input: ImageUploader,
+      },
       of: [
         {
           type: "image",
@@ -153,10 +159,14 @@ export const productType = defineType({
           },
         },
       ],
+      options: {
+        layout: "grid",
+      },
       validation: (rule) => [
         rule.min(1).error("At least one image is required"),
       ],
     }),
+
     defineField({
       name: "stock",
       type: "number",
