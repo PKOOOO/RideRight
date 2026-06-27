@@ -1,7 +1,7 @@
 import { PackageIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 import { FUEL_TYPES_SANITY_LIST, TRANSMISSIONS_SANITY_LIST, ORIGIN_TYPES_SANITY_LIST } from "@/lib/constants/filters";
-import { ImageUploader } from "@/components/admin/ImageUploader";
+import { ImageUploader } from "@/components/admin/StudioImageUploader";
 
 export const productType = defineType({
   name: "product",
