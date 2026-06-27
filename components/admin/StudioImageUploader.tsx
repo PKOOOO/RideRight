@@ -1,34 +1,19 @@
-// components/admin/ImageUploader.tsx
 "use client";
 
 import { useState, useRef } from "react";
 import Image from "next/image";
-import {
-  useDocument,
-  useEditDocument,
-  useClient,
-  type DocumentHandle,
-} from "@sanity/sdk-react";
+import { useClient, type ArrayOfObjectsInputProps, insert, unset, setIfMissing } from "sanity";
 import { Upload, X, Loader2, ImageIcon, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-interface SanityImageAsset {
+interface SanityImageItem {
   _type: "image";
   _key: string;
   asset: {
     _type: "reference";
     _ref: string;
   };
-}
-
-interface ImageWithUrl {
-  _key: string;
-  _type: string;
-  asset: {
-    _ref: string;
-    url?: string;
-  } | null;
 }
 
 function getImageUrl(assetRef: string) {
@@ -38,75 +23,69 @@ function getImageUrl(assetRef: string) {
   return `https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${id}-${dimensions}.${format}`;
 }
 
-export function ImageUploader(handle: DocumentHandle) {
+export function ImageUploader(props: ArrayOfObjectsInputProps) {
+  const { value = [], onChange } = props;
+  const client = useClient({ apiVersion: "2024-01-01" });
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const client = useClient({ apiVersion: "2024-01-01" });
-  const { data: images } = useDocument({ ...handle, path: "images" });
-  const editImages = useEditDocument({ ...handle, path: "images" });
-
-  const currentImages = (images as ImageWithUrl[] | null) ?? [];
+  const currentImages = value as SanityImageItem[];
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
 
     setIsUploading(true);
     setUploadProgress(`Uploading ${files.length} image(s)...`);
 
     try {
-      const newImages: SanityImageAsset[] = [];
+      const newImages: SanityImageItem[] = [];
 
       for (let i = 0; i < files.length; i++) {
-        const file = files[i];
         setUploadProgress(`Uploading ${i + 1} of ${files.length}...`);
-
-        const asset = await client.assets.upload("image", file, {
-          filename: file.name,
+        const asset = await client.assets.upload("image", files[i], {
+          filename: files[i].name,
         });
-
         newImages.push({
           _type: "image",
           _key: crypto.randomUUID(),
-          asset: {
-            _type: "reference",
-            _ref: asset._id,
-          },
+          asset: { _type: "reference", _ref: asset._id },
         });
       }
 
-      const updatedImages = [...currentImages, ...newImages];
-      editImages(updatedImages);
-      setUploadProgress(null);
-    } catch (error) {
-      console.error("Upload failed:", error);
-      setUploadProgress("Upload failed. Please try again.");
+      onChange([
+        setIfMissing([]),
+        insert(newImages, "after", [-1]),
+      ]);
+    } catch (err) {
+      console.error("Upload failed:", err);
+      setUploadProgress("Upload failed.");
       setTimeout(() => setUploadProgress(null), 3000);
     } finally {
       setIsUploading(false);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      setUploadProgress(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
-  const handleRemoveImage = (keyToRemove: string) => {
-    const updatedImages = currentImages.filter(
-      (img) => img._key !== keyToRemove
-    );
-    editImages(updatedImages.length > 0 ? updatedImages : null);
+  const handleRemove = (key: string) => {
+    onChange([unset([{_key: key}])]);
   };
 
-  const handleMoveImage = (fromIndex: number, toIndex: number) => {
-    if (toIndex < 0 || toIndex >= currentImages.length) return;
-    const updatedImages = [...currentImages];
-    const [movedImage] = updatedImages.splice(fromIndex, 1);
-    updatedImages.splice(toIndex, 0, movedImage);
-    editImages(updatedImages);
-  };
-
+  const handleMove = (fromIndex: number, toIndex: number) => {
+  if (toIndex < 0 || toIndex >= currentImages.length) return;
+  const updated = [...currentImages];
+  const [moved] = updated.splice(fromIndex, 1);
+  updated.splice(toIndex, 0, moved);
+  
+  // unset each item individually then reinsert in new order
+  const patches = [
+    ...currentImages.map((img) => unset([{ _key: img._key }])),
+    insert(updated, "after", [-1]),
+  ];
+  onChange(patches);
+};
   return (
     <div className="space-y-4">
       <input
@@ -171,7 +150,7 @@ export function ImageUploader(handle: DocumentHandle) {
                       variant="secondary"
                       size="icon"
                       className="h-7 w-7"
-                      onClick={() => handleMoveImage(index, index - 1)}
+                      onClick={() => handleMove(index, index - 1)}
                       disabled={index === 0}
                     >
                       <ChevronUp className="h-4 w-4" />
@@ -181,7 +160,7 @@ export function ImageUploader(handle: DocumentHandle) {
                       variant="secondary"
                       size="icon"
                       className="h-7 w-7"
-                      onClick={() => handleMoveImage(index, index + 1)}
+                      onClick={() => handleMove(index, index + 1)}
                       disabled={index === currentImages.length - 1}
                     >
                       <ChevronDown className="h-4 w-4" />
@@ -192,7 +171,7 @@ export function ImageUploader(handle: DocumentHandle) {
                     variant="destructive"
                     size="icon"
                     className="h-7 w-7"
-                    onClick={() => handleRemoveImage(image._key)}
+                    onClick={() => handleRemove(image._key)}
                   >
                     <X className="h-4 w-4" />
                   </Button>
