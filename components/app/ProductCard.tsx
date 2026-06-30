@@ -81,7 +81,7 @@ export function ProductCard({ product }: ProductCardProps) {
           {isOutOfStock && (
             <Badge
               variant="destructive"
-              className="absolute top-1/2 left-1/2 w-[540px] -translate-x-1/2 -translate-y-1/2 -rotate-45 bg-red-600 py-2 text-center text-sm font-bold uppercase tracking-wider text-white shadow-lg"
+              className="absolute -left-46 top-11 flex h-13 w-[315px] items-center justify-end pr-17 rotate-[-43deg] bg-red-600 text-sm font-bold uppercase tracking-wider text-white shadow-lg"
             >
               Sold
             </Badge>
