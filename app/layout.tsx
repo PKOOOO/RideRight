@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // google: "your-google-verification-code",
+    google: "oLgCLrzbNdWFElYYutGrtZmJ_gJsmWAgi6Dn587gRAY",
   },
 };
 
@@ -92,6 +92,26 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "AutoDealer",
+              "name": "RideRight Autos Ltd",
+              "url": "https://www.rideright.ke",
+              "telephone": "0796611116",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Nairobi",
+                "addressCountry": "KE"
+              },
+              "sameAs": [
+                "https://www.rideright.ke"
+              ]
+            })
+          }}
+        />
         {children}
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
       </body>
