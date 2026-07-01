@@ -1,5 +1,5 @@
 import { createAgentUIStreamResponse, type UIMessage } from "ai";
-import { auth } from "@clerk/nextjs/server";
+
 import { createShoppingAgent } from "@/lib/ai/shopping-agent";
 
 export async function POST(request: Request) {
@@ -18,11 +18,8 @@ export async function POST(request: Request) {
     });
   }
 
-  // Get the user's session - userId will be null if not authenticated
-  const { userId } = await auth();
-
-  // Create agent with user context (orders tool only available if authenticated)
-  const agent = createShoppingAgent({ userId });
+  // No auth system — agent runs without user context (orders tool disabled)
+  const agent = createShoppingAgent({ userId: null });
 
   return createAgentUIStreamResponse({
     agent,
