@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn, formatPrice } from "@/lib/utils";
 import { ORIGIN_TYPES } from "@/lib/constants/filters";
 import type { FEATURED_PRODUCTS_QUERYResult } from "@/sanity.types";
+import { PortableText } from "@portabletext/react";
 
 type FeaturedProduct = FEATURED_PRODUCTS_QUERYResult[number];
 
@@ -161,10 +162,21 @@ function FeaturedSlide({ product }: FeaturedSlideProps) {
         </h2>
 
         {product.description && (
-          <p className="mt-4 line-clamp-3 text-sm text-zinc-300 sm:text-base lg:text-lg">
-            {product.description}
-          </p>
-        )}
+  <div className="mt-4 line-clamp-3 text-sm text-zinc-300 sm:text-base lg:text-lg">
+    <PortableText
+      value={product.description as any}
+      components={{
+        block: {
+          normal: (props) => <p>{props.children}</p>,
+        },
+        marks: {
+          strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+          em: ({ children }) => <em className="italic">{children}</em>,
+        },
+      }}
+    />
+  </div>
+)}
 
         <p className="mt-6 text-3xl font-bold text-white lg:text-4xl">
           {formatPrice(product.price)}

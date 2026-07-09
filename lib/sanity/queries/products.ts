@@ -71,7 +71,13 @@ export const ALL_PRODUCTS_QUERY = defineQuery(`*[
   _id,
   name,
   "slug": slug.current,
-  description,
+  description[]{
+  ...,
+  _type == "block" => {
+    ...,
+    children[]{...}
+  }
+},
   price,
   "images": images[]{
     _key,
@@ -112,7 +118,13 @@ export const FEATURED_PRODUCTS_QUERY = defineQuery(`*[
   _id,
   name,
   "slug": slug.current,
-  description,
+  description[]{
+  ...,
+  _type == "block" => {
+    ...,
+    children[]{...}
+  }
+},
   price,
   "images": images[]{
     _key,
