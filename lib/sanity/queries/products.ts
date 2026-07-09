@@ -183,7 +183,13 @@ export const PRODUCT_BY_SLUG_QUERY = defineQuery(`*[
   _id,
   name,
   "slug": slug.current,
-  description,
+  description[]{
+    ...,
+    _type == "block" => {
+      ...,
+      children[]{...}
+    }
+  },
   price,
   "images": images[]{
     _key,
@@ -198,13 +204,11 @@ export const PRODUCT_BY_SLUG_QUERY = defineQuery(`*[
     title,
     "slug": slug.current
   },
-
   year,
   fuelType,
   engine,
   transmission,
   origin,
-
   location,
   mileage,
   horsePower,

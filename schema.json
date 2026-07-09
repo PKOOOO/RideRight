@@ -413,6 +413,14 @@
             {
               "type": "string",
               "value": "imported"
+            },
+            {
+              "type": "string",
+              "value": "foreign_used_in_stock"
+            },
+            {
+              "type": "string",
+              "value": "foreign_used_soon_arriving"
             }
           ]
         },

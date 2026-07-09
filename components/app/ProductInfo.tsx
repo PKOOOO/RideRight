@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { ORIGIN_TYPES } from "@/lib/constants/filters";
 import { formatPrice } from "@/lib/utils";
 import type { PRODUCT_BY_SLUG_QUERYResult } from "@/sanity.types";
+import { PortableText } from "@portabletext/react";
 
 interface ProductInfoProps {
   product: NonNullable<PRODUCT_BY_SLUG_QUERYResult>;
@@ -46,10 +47,29 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
       {/* Description */}
       {product.description && (
-        <p className="mt-4 text-zinc-600 dark:text-zinc-400">
-          {product.description}
-        </p>
-      )}
+        <div className="mt-4 leading-7 space-y-3">
+          <PortableText
+            value={product.description as any}
+            components={{
+              marks: {
+                strong: ({ children }) => (
+                  <strong className="font-semibold">
+                    {children}
+                  </strong>
+                ),
+                em: ({ children }) => (
+                  <em className="italic">{children}</em>
+                ),
+              },
+              block: {
+                normal: (props) => (
+                  <p className="text-zinc-600 dark:text-zinc-400">{props.children}</p>
+                ),
+              },
+            }}
+          />
+        </div>
+      )}     
 
       {/* Vehicle Condition & Add to Cart */}
       <div className="mt-6 flex flex-col gap-3">
