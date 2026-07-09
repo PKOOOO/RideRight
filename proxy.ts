@@ -1,24 +1,11 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import type { NextFetchEvent, NextRequest } from "next/server";
 
-const isProtectedRoute = createRouteMatcher([
-  "/checkout",
-  "/orders",
-  "/orders/[id]",
-  "/checkout/success",
-]);
-
 const canonicalHost = "www.rideright.ke";
-const clerkHandler = clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
-    await auth.protect();
-  }
-});
 
 export default async function proxy(
   request: NextRequest,
-  event: NextFetchEvent
+  _event: NextFetchEvent
 ) {
   // Redirect non-www to www (e.g. rideright.ke -> www.rideright.ke)
   const hostname = request.headers.get("host") ?? "";
@@ -29,7 +16,7 @@ export default async function proxy(
     return NextResponse.redirect(newUrl, 301);
   }
 
-  return clerkHandler(request, event);
+  return NextResponse.next();
 }
 
 export const config = {

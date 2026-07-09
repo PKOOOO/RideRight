@@ -1,4 +1,4 @@
-import { ClerkProvider } from "@clerk/nextjs";
+
 import { SanityLive } from "@/sanity/lib/live";
 import { CartStoreProvider } from "@/lib/store/cart-store-provider";
 import { Toaster } from "@/components/ui/sonner";
@@ -11,24 +11,20 @@ import { AppShell } from "@/components/app/AppShell";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
+    <CartStoreProvider>
+      <ChatStoreProvider>
+        <AppShell>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </AppShell>
+        <CartSheet />
+        <ChatSheet />
+        <Toaster position="bottom-center" />
 
-      <CartStoreProvider>
-        <ChatStoreProvider>
-          <AppShell>
-            <Header />
-            <main>{children}</main>
-            <Footer />
-          </AppShell>
-          <CartSheet />
-          <ChatSheet />
-          <Toaster position="bottom-center" />
-
-          <SanityLive />
-        </ChatStoreProvider>
-
-      </CartStoreProvider>
-    </ClerkProvider>
+        <SanityLive />
+      </ChatStoreProvider>
+    </CartStoreProvider>
   );
 }
 

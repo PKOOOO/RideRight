@@ -3,9 +3,8 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Package, ShoppingBag, Sparkles, User, Menu, Instagram, Facebook, X } from "lucide-react";
+import { Package, ShoppingBag, Sparkles, Menu, Instagram, Facebook, X } from "lucide-react";
 import { FaXTwitter } from "react-icons/fa6";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { useCartActions, useTotalItems } from "@/lib/store/cart-store-provider";
 import { useChatActions, useIsChatOpen } from "@/lib/store/chat-store-provider";
@@ -57,15 +56,13 @@ export function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          {/* My Orders - Only when signed in */}
-          <SignedIn>
-            <Button asChild>
-              <Link href="/orders" className="flex items-center gap-2">
-                <Package className="h-5 w-5" />
-                <span className="text-sm font-medium">My Orders</span>
-              </Link>
-            </Button>
-          </SignedIn>
+          {/* My Orders */}
+          <Button asChild>
+            <Link href="/orders" className="flex items-center gap-2">
+              <Package className="h-5 w-5" />
+              <span className="text-sm font-medium">My Orders</span>
+            </Link>
+          </Button>
 
           {/* AI Shopping Assistant */}
           {!isChatOpen && (
@@ -93,34 +90,6 @@ export function Header() {
             )}
             <span className="sr-only">Open cart ({totalItems} items)</span>
           </Button>
-
-          {/* User */}
-          <SignedIn>
-            <UserButton
-              afterSwitchSessionUrl="/"
-              appearance={{
-                elements: {
-                  avatarBox: "h-9 w-9",
-                },
-              }}
-            >
-              <UserButton.MenuItems>
-                <UserButton.Link
-                  label="My Orders"
-                  labelIcon={<Package className="h-4 w-4" />}
-                  href="/orders"
-                />
-              </UserButton.MenuItems>
-            </UserButton>
-          </SignedIn>
-          <SignedOut>
-            <SignInButton mode="modal">
-              <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
-                <User className="h-5 w-5" />
-                <span className="sr-only">Sign in</span>
-              </Button>
-            </SignInButton>
-          </SignedOut>
 
           {/* Mobile Menu Trigger */}
           <div className="md:hidden">
@@ -179,21 +148,16 @@ export function Header() {
             </Link>
           </div>
 
-          <SignedIn>
-            <div className="pb-4 w-full max-w-[200px] border-b border-zinc-200 dark:border-zinc-800">
-              <Link
-                href="/orders"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="group flex items-center justify-center gap-3 rounded-lg px-4 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
-              >
-                <Package className="h-5 w-5 text-zinc-400 transition-colors group-hover:text-red-500" />
-                My Orders
-              </Link>
-              <div className="mt-2 flex items-center justify-center gap-3">
-                <UserButton afterSwitchSessionUrl="/" />
-              </div>
-            </div>
-          </SignedIn>
+          <div className="pb-4 w-full max-w-[200px] border-b border-zinc-200 dark:border-zinc-800">
+            <Link
+              href="/orders"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="group flex items-center justify-center gap-3 rounded-lg px-4 py-3 text-lg font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+            >
+              <Package className="h-5 w-5 text-zinc-400 transition-colors group-hover:text-red-500" />
+              My Orders
+            </Link>
+          </div>
 
           {/* Social Icons */}
           <div className="flex items-center gap-6 pt-2">
