@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
-import { Download } from "lucide-react";
+import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 import type { PRODUCT_BY_SLUG_QUERYResult } from "@/sanity.types";
 
 type ProductImages = NonNullable<PRODUCT_BY_SLUG_QUERYResult>["images"];
@@ -111,6 +111,29 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
               sizes="(max-width: 1024px) 100vw, 50vw"
               priority
             />
+
+            {/* Left Arrow */}
+            {selectedIndex > 0 && (
+              <button
+                type="button"
+                onClick={() => setSelectedIndex(selectedIndex - 1)}
+                className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 rounded-full bg-black/60 text-white backdrop-blur-sm hover:bg-black/80 transition"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+            )}
+
+            {/* Right Arrow */}
+            {selectedIndex < images.length - 1 && (
+              <button
+                type="button"
+                onClick={() => setSelectedIndex(selectedIndex + 1)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 rounded-full bg-black/60 text-white backdrop-blur-sm hover:bg-black/80 transition"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            )}
+
             {/* Download buttons */}
             <div className="absolute bottom-3 right-3 flex gap-2">
               <button

@@ -36,10 +36,23 @@ export const productType = defineType({
     }),
     defineField({
       name: "description",
-      type: "text",
+      type: "array",
       group: "details",
-      rows: 4,
       description: "Detailed car description",
+      of: [
+        {
+          type: "block",
+          styles: [
+            { title: "Normal", value: "normal" },
+          ],
+          marks: {
+            decorators: [
+              { title: "Bold", value: "strong" },
+              { title: "Italic", value: "em" },
+            ],
+          },
+        },
+      ],
     }),
     defineField({
       name: "price",

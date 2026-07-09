@@ -34,10 +34,10 @@ export async function generateMetadata({
 
   return {
     title: product.name,
-    description: product.description || `${product.name} - ${price}. ${product.year} ${product.fuelType} ${product.transmission}. Available at RideRight Autos Kenya.`,
+    description: `${product.name} - ${price}. ${product.year} ${product.fuelType} ${product.transmission}. Available at RideRight Autos Kenya.`,
     openGraph: {
       title: `${product.name} | RideRight`,
-      description: product.description || `${product.name} for sale at RideRight Autos Kenya. ${price}`,
+      description: `${product.name} for sale at RideRight Autos Kenya. ${price}`,
       type: "website",
       url: `https://www.rideright.ke/products/${slug}`,
       images: imageUrl
@@ -54,7 +54,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: `${product.name} | RideRight`,
-      description: product.description || `${product.name} for sale - ${price}`,
+      description: `${product.name} for sale - ${price}`,
       images: imageUrl ? [imageUrl] : undefined,
     },
   };
