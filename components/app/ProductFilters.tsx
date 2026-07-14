@@ -19,14 +19,16 @@ import type { ALL_CATEGORIES_QUERYResult } from "@/sanity.types";
 
 interface ProductFiltersProps {
   categories: ALL_CATEGORIES_QUERYResult;
+  availableModels?: string[];
 }
 
-export function ProductFilters({ categories }: ProductFiltersProps) {
+export function ProductFilters({ categories, availableModels = [] }: ProductFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const currentSearch = searchParams.get("q") ?? "";
   const currentCategory = searchParams.get("category") ?? "";
+  const currentModel = searchParams.get("model") ?? "";
   const currentFuelType = searchParams.get("fuelType") ?? "";
   const currentTransmission = searchParams.get("transmission") ?? "";
   const currentOrigin = searchParams.get("origin") ?? "";
@@ -35,20 +37,18 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   const urlMaxPrice = Number(searchParams.get("maxPrice")) || 20000000;
   const currentInStock = searchParams.get("inStock") === "true";
 
-  // Local state for price range (for smooth slider dragging)
   const [priceRange, setPriceRange] = useState<[number, number]>([
     urlMinPrice,
     urlMaxPrice,
   ]);
 
-  // Sync local state when URL changes
   useEffect(() => {
     setPriceRange([urlMinPrice, urlMaxPrice]);
   }, [urlMinPrice, urlMaxPrice]);
 
-  // Check which filters are active
   const isSearchActive = !!currentSearch;
   const isCategoryActive = !!currentCategory;
+  const isModelActive = !!currentModel;
   const isFuelTypeActive = !!currentFuelType;
   const isTransmissionActive = !!currentTransmission;
   const isOriginActive = !!currentOrigin;
@@ -58,16 +58,17 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   const hasActiveFilters =
     isSearchActive ||
     isCategoryActive ||
+    isModelActive ||
     isFuelTypeActive ||
     isTransmissionActive ||
     isOriginActive ||
     isPriceActive ||
     isInStockActive;
 
-  // Count active filters
   const activeFilterCount = [
     isSearchActive,
     isCategoryActive,
+    isModelActive,
     isFuelTypeActive,
     isTransmissionActive,
     isOriginActive,
@@ -78,7 +79,6 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   const updateParams = useCallback(
     (updates: Record<string, string | number | null>) => {
       const params = new URLSearchParams(searchParams.toString());
-
       Object.entries(updates).forEach(([key, value]) => {
         if (value === null || value === "" || value === 0) {
           params.delete(key);
@@ -86,7 +86,6 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
           params.set(key, String(value));
         }
       });
-
       router.push(`?${params.toString()}`, { scroll: false });
     },
     [router, searchParams],
@@ -111,7 +110,6 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
     }
   };
 
-  // Format price for display
   const formatPriceDisplay = (price: number) => {
     if (price >= 1000000) {
       return `${(price / 1000000).toFixed(1)}M`;
@@ -119,7 +117,6 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
     return `${(price / 1000).toFixed(0)}K`;
   };
 
-  // Helper for filter label with active indicator
   const FilterLabel = ({
     children,
     isActive,
@@ -158,7 +155,6 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
 
   return (
     <div className="space-y-6 rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950">
-      {/* Clear Filters - Show at top when active */}
       {hasActiveFilters && (
         <div className="rounded-lg border-2 border-red-300 bg-red-50 p-3 dark:border-red-700 dark:bg-red-950">
           <div className="mb-2 flex items-center justify-between">
@@ -199,16 +195,20 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
         </form>
       </div>
 
-      {/* Body Type (Category) */}
+      {/* Make */}
       <div>
         <FilterLabel isActive={isCategoryActive} filterKey="category">
           Make
         </FilterLabel>
         <Select
           value={currentCategory || "all"}
-          onValueChange={(value) =>
-            updateParams({ category: value === "all" ? null : value })
-          }
+          onValueChange={(value) => {
+            // Clear model when make changes
+            updateParams({
+              category: value === "all" ? null : value,
+              model: null,
+            });
+          }}
         >
           <SelectTrigger
             className={
@@ -229,6 +229,39 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
           </SelectContent>
         </Select>
       </div>
+
+      {/* Model — only shows when a make is selected and has models */}
+      {isCategoryActive && availableModels.length > 0 && (
+        <div>
+          <FilterLabel isActive={isModelActive} filterKey="model">
+            Model
+          </FilterLabel>
+          <Select
+            value={currentModel || "all"}
+            onValueChange={(value) =>
+              updateParams({ model: value === "all" ? null : value })
+            }
+          >
+            <SelectTrigger
+              className={
+                isModelActive
+                  ? "border-red-500 ring-1 ring-red-500 dark:border-red-400 dark:ring-red-400"
+                  : ""
+              }
+            >
+              <SelectValue placeholder="All Models" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Models</SelectItem>
+              {availableModels.map((model) => (
+                <SelectItem key={model} value={model}>
+                  {model}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
       {/* Fuel Type */}
       <div>
@@ -292,7 +325,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
         </Select>
       </div>
 
-      {/* Vehicle Condition (Origin) */}
+      {/* Vehicle Condition */}
       <div>
         <FilterLabel isActive={isOriginActive} filterKey="origin">
           Vehicle condition

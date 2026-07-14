@@ -7,6 +7,7 @@ import {
   FILTER_PRODUCTS_BY_PRICE_DESC_QUERY,
   FILTER_PRODUCTS_BY_YEAR_DESC_QUERY,
   FILTER_PRODUCTS_BY_RELEVANCE_QUERY,
+  MODELS_BY_CATEGORY_QUERY,
 } from "@/lib/sanity/queries/products";
 import { ALL_CATEGORIES_QUERY } from "@/lib/sanity/queries/categories";
 import { ProductSection } from "@/components/app/ProductSection";
@@ -22,6 +23,7 @@ interface PageProps {
   searchParams: Promise<{
     q?: string;
     category?: string;
+    model?: string;
     fuelType?: string;
     transmission?: string;
     minPrice?: string;
@@ -37,6 +39,7 @@ export default async function HomePage({ searchParams }: PageProps) {
 
   const searchQuery = params.q ?? "";
   const categorySlug = params.category ?? "";
+  const model = params.model ?? "";
   const fuelType = params.fuelType ?? "";
   const transmission = params.transmission ?? "";
   const minPrice = Number(params.minPrice) || 0;
@@ -74,6 +77,7 @@ export default async function HomePage({ searchParams }: PageProps) {
     params: {
       searchQuery,
       categorySlug,
+      model,
       fuelType,
       transmission,
       minPrice,
@@ -87,6 +91,18 @@ export default async function HomePage({ searchParams }: PageProps) {
   const { data: categories } = await sanityFetch({
     query: ALL_CATEGORIES_QUERY,
   });
+
+  // Fetch models for the selected category
+  const { data: modelData } = await sanityFetch({
+    query: MODELS_BY_CATEGORY_QUERY,
+    params: { categorySlug },
+  });
+
+  const availableModels = Array.from(
+    new Set<string>(
+      modelData?.map((p: { model: string }) => p.model).filter(Boolean) ?? []
+    )
+  );
 
   // Fetch featured products for carousel
   const { data: featuredProducts } = await sanityFetch({
@@ -136,6 +152,7 @@ export default async function HomePage({ searchParams }: PageProps) {
           categories={categories}
           products={products}
           searchQuery={searchQuery}
+          availableModels={availableModels}
         />
       </div>
 

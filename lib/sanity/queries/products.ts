@@ -16,12 +16,14 @@ const PRODUCT_FILTER_CONDITIONS = `
   && ($maxPrice == 0 || price <= $maxPrice)
   && ($searchQuery == "" || name match $searchQuery + "*" || description match $searchQuery + "*" || category->title match $searchQuery + "*")
   && ($inStock == false || stock > 0)
+  && ($model == "" || model == $model)
 `;
 
 /** Projection for filtered product lists (includes multiple images for hover) */
 const FILTERED_PRODUCT_PROJECTION = `{
   _id,
   name,
+  model,
   "slug": slug.current,
   price,
   "images": images[0...4]{
@@ -437,3 +439,9 @@ export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
   stock,
   featured
 }`);
+
+export const MODELS_BY_CATEGORY_QUERY = defineQuery(`
+  *[_type == "product" && category->slug.current == $categorySlug && defined(model)] {
+    "model": model
+  } | order(model asc)
+`);

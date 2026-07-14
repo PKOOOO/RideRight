@@ -2,6 +2,7 @@ import { PackageIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 import { FUEL_TYPES_SANITY_LIST, TRANSMISSIONS_SANITY_LIST, ORIGIN_TYPES_SANITY_LIST } from "@/lib/constants/filters";
 import { ImageUploader } from "@/components/admin/StudioImageUploader";
+import { ModelSelector } from "@/components/admin/ModelSelector";
 
 export const productType = defineType({
   name: "product",
@@ -73,6 +74,19 @@ export const productType = defineType({
       description: "e.g., Toyota, BMW, Mercedes",
       validation: (rule) => [rule.required().error("Make is required")],
     }),
+
+  defineField({
+    name: "model",
+    title: "Model",
+    type: "string",
+    group: "details",
+    description: "e.g., 'GLA', 'GLE', 'C200'",
+    components: {
+      input: ModelSelector,
+    },
+    validation: (rule) => [rule.required().error("Model is required")],
+  }),
+
     defineField({
       name: "year",
       title: "Year",
@@ -155,7 +169,6 @@ export const productType = defineType({
       description: "Engine Torque (Nm)",
     }),
 
-    // ↓ only this field changed
     defineField({
       name: "images",
       title: "Images",

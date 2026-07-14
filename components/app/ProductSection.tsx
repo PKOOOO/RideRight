@@ -14,12 +14,14 @@ interface ProductSectionProps {
   categories: ALL_CATEGORIES_QUERYResult;
   products: FILTER_PRODUCTS_BY_NAME_QUERYResult;
   searchQuery: string;
+  availableModels?: string[];
 }
 
 export function ProductSection({
   categories,
   products,
   searchQuery,
+  availableModels = [],
 }: ProductSectionProps) {
   const [filtersOpen, setFiltersOpen] = useState(true);
 
@@ -69,7 +71,7 @@ export function ProductSection({
           className={`shrink-0 transition-all duration-300 ease-in-out ${filtersOpen ? "w-full lg:w-72 lg:opacity-100" : "hidden lg:hidden"
             }`}
         >
-          <ProductFilters categories={categories} />
+          <ProductFilters categories={categories} availableModels={availableModels} />
         </aside>
 
         {/* Product Grid - expands to full width when filters hidden */}
