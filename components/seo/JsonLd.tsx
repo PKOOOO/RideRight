@@ -1,3 +1,5 @@
+import { portableTextToPlainText, type PortableTextBlock } from "@/lib/utils";
+
 export function OrganizationJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
@@ -74,7 +76,7 @@ export function OrganizationJsonLd() {
 interface ProductJsonLdProps {
   product: {
     name: string | null;
-    description: string | null;
+    description: PortableTextBlock[] | null;
     price: number | null;
     slug: string | null;
     images: { asset: { url: string | null } | null }[] | null;
@@ -88,12 +90,13 @@ interface ProductJsonLdProps {
 
 export function ProductJsonLd({ product }: ProductJsonLdProps) {
   const imageUrl = product.images?.[0]?.asset?.url;
+  const descriptionText = portableTextToPlainText(product.description);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Car",
     name: product.name,
-    description: product.description,
+    description: descriptionText,
     image: imageUrl,
     url: `https://www.rideright.ke/products/${product.slug}`,
     vehicleModelDate: product.year?.toString(),

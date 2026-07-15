@@ -1,0 +1,17 @@
+export const MAKE_MODELS: Record<string, string[]> = {
+  Mercedes: ["GLA", "GLE", "C200", "C350d", "E200", "E350", "S500", "CLA", "ML350", "GLC"],
+  Toyota: ["Land Cruiser", "Prado", "Hilux", "Camry", "Corolla", "RAV4", "Fortuner", "Harrier", "Vanguard"],
+  BMW: ["X1", "X3", "X5", "X6", "320i", "330i", "520i", "528i", "M3", "M5"],
+  Nissan: ["X-Trail", "Patrol", "Navara", "Note", "Juke", "Qashqai", "Murano", "Serena"],
+  Subaru: ["Forester", "Outback", "Impreza", "Legacy", "XV", "BRZ"],
+  Ford: ["Ranger", "Explorer", "Everest", "Focus", "Mustang"],
+  Hyundai: ["Tucson", "Santa Fe", "ix35", "Elantra", "Accent", "Sonata"],
+  Volkswagen: ["Golf", "Polo", "Tiguan", "Touareg", "Passat", "Jetta"],
+  Honda: ["CR-V", "Fit", "Accord", "Civic", "Pilot", "HR-V"],
+  Mazda: ["CX5", "CX7", "CX8", "3", "6", "BT50"],
+  Mitsubishi: ["Pajero", "Outlander", "Eclipse Cross", "ASX", "L200"],
+  Isuzu: ["D-Max", "MU-X", "Trooper"],
+  "Land Rover": ["Discovery", "Range Rover", "Defender", "Freelander", "Evoque"],
+  Jeep: ["Wrangler", "Cherokee", "Grand Cherokee", "Compass"],
+  Audi: ["A3", "A4", "A6", "Q3", "Q5", "Q7", "TT"],
+};

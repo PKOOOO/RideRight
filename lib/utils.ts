@@ -37,6 +37,34 @@ const DATE_FORMAT_OPTIONS: Record<
     minute: "2-digit",
   },
 };
+type PortableTextSpan = {
+  _type: "span";
+  text?: string;
+  marks?: string[];
+  _key?: string;
+};
+
+type PortableTextBlock = {
+  _type: string;
+  children?: PortableTextSpan[] | null;
+  style?: string;
+  listItem?: string;
+  _key?: string;
+};
+
+export function portableTextToPlainText(
+  blocks: PortableTextBlock[] | null | undefined
+): string {
+  if (!blocks) return "";
+  return blocks
+    .map((block) => {
+      if (block._type !== "block" || !block.children) return "";
+      return block.children.map((child) => child.text ?? "").join("");
+    })
+    .join(" ");
+}
+
+export type { PortableTextBlock };
 
 /**
  * Format a date string with locale-specific formatting
