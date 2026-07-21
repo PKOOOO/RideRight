@@ -44,7 +44,7 @@ export default async function HomePage({ searchParams }: PageProps) {
   const transmission = params.transmission ?? "";
   const minPrice = Number(params.minPrice) || 0;
   const maxPrice = Number(params.maxPrice) || 0;
-  const sort = params.sort ?? "name";
+  const sort = params.sort ?? "year_desc";
   const inStock = params.inStock === "true";
   const originParam = params.origin ?? "all";
   // "all" means show everything — pass empty string to GROQ so the filter is skipped
