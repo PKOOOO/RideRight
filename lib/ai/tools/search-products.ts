@@ -114,7 +114,7 @@ export const searchProductsTool = tool({
               block.children?.map((child: any) => child.text).join("") ?? ""
             )
             .join(" ") ?? null
-        : product.description ?? null,
+      : product.description ?? null,
         price: product.price ?? null,
         priceFormatted: product.price ? formatPrice(product.price) : null,
         category: product.category?.title ?? null,
