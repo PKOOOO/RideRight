@@ -194,6 +194,14 @@ export const productType = defineType({
     }),
 
     defineField({
+      name: "originalPrice",
+      title: "Original Price (before discount)",
+      type: "number",
+      group: "details",
+      description: "Set this if the car has a price drop — shows strikethrough on the site",
+      }),
+
+    defineField({
       name: "stock",
       type: "number",
       group: "inventory",

@@ -178,9 +178,21 @@ function FeaturedSlide({ product }: FeaturedSlideProps) {
   </div>
 )}
 
-        <p className="mt-6 text-3xl font-bold text-white lg:text-4xl">
+        <div className="mt-6 flex items-center gap-3">
+        <p className="text-3xl font-bold text-white lg:text-4xl">
           {formatPrice(product.price)}
         </p>
+        {product.originalPrice && product.originalPrice > (product.price ?? 0) && (
+          <>
+            <p className="text-lg text-white/50 line-through">
+              {formatPrice(product.originalPrice)}
+            </p>
+            <span className="rounded-full bg-red-500 px-2 py-0.5 text-xs font-medium text-white">
+              {Math.round(((product.originalPrice - (product.price ?? 0)) / product.originalPrice) * 100)}% OFF
+            </span>
+          </>
+        )}
+      </div>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button

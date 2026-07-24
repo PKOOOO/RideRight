@@ -99,10 +99,12 @@ export default async function HomePage({ searchParams }: PageProps) {
   });
 
   const availableModels = Array.from(
-    new Set<string>(
-      modelData?.map((p: { model: string }) => p.model).filter(Boolean) ?? []
-    )
-  );
+  new Set<string>(
+    modelData
+      ?.map((p: { model: string | null }) => p.model)
+      .filter((m): m is string => Boolean(m)) ?? []
+  )
+);
 
   // Fetch featured products for carousel
   const { data: featuredProducts } = await sanityFetch({

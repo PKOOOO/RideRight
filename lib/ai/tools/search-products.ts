@@ -24,21 +24,18 @@ const productSearchSchema = z.object({
       "Filter by body type slug (e.g., 'suv', 'sedan', 'hatchback', 'coupe', 'pickup')"
     ),
   fuelType: z
-    .enum(["", ...FUEL_TYPE_VALUES])
+    .enum(FUEL_TYPE_VALUES)
     .optional()
-    .default("")
-    .describe("Filter by fuel type"),
+    .describe("Filter by fuel type. Omit if not specified."),
   transmission: z
-    .enum(["", ...TRANSMISSION_VALUES])
+    .enum(TRANSMISSION_VALUES)
     .optional()
-    .default("")
-    .describe("Filter by transmission type"),
+    .describe("Filter by transmission type. Omit if not specified."),
   origin: z
-    .enum(["", ...ORIGIN_TYPE_VALUES])
+    .enum(ORIGIN_TYPE_VALUES)
     .optional()
-    .default("")
     .describe(
-      "Filter by vehicle condition (e.g., 'locally_used' for Locally Used, 'imported' for Available for Import, 'foreign_used_in_stock' for Foreign Used In Stock, 'foreign_used_soon_arriving' for Arriving Soon)"
+      "Filter by vehicle condition (e.g., 'locally_used' for Locally Used, 'imported' for Available for Import, 'foreign_used_in_stock' for Foreign Used In Stock, 'foreign_used_soon_arriving' for Arriving Soon). Omit if not specified."
     ),
   minPrice: z
     .number()
