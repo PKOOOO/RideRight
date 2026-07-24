@@ -26,6 +26,7 @@ const FILTERED_PRODUCT_PROJECTION = `{
   model,
   "slug": slug.current,
   price,
+  originalPrice,
   "images": images[0...4]{
     _key,
     asset->{
@@ -81,6 +82,7 @@ export const ALL_PRODUCTS_QUERY = defineQuery(`*[
   }
 },
   price,
+  originalPrice,
   "images": images[]{
     _key,
     asset->{
@@ -128,6 +130,7 @@ export const FEATURED_PRODUCTS_QUERY = defineQuery(`*[
   }
 },
   price,
+  originalPrice,
   "images": images[]{
     _key,
     asset->{
@@ -205,6 +208,7 @@ export const PRODUCT_BY_SLUG_QUERY = defineQuery(`*[
     }
   },
   price,
+  originalPrice,
   "images": images[]{
     _key,
     asset->{

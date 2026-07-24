@@ -41,9 +41,21 @@ export function ProductInfo({ product }: ProductInfoProps) {
       </h1>
 
       {/* Price */}
-      <p className="mt-4 text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
-        {formatPrice(product.price)}
-      </p>
+      <div className="mt-4 flex items-center gap-3">
+        <p className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
+          {formatPrice(product.price)}
+        </p>
+        {product.originalPrice && product.originalPrice > (product.price ?? 0) && (
+          <>
+            <p className="text-lg text-zinc-400 line-through dark:text-zinc-500">
+              {formatPrice(product.originalPrice)}
+            </p>
+            <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-600 dark:bg-red-900/30 dark:text-red-400">
+              {Math.round(((product.originalPrice - (product.price ?? 0)) / product.originalPrice) * 100)}% OFF
+            </span>
+          </>
+        )}
+      </div>
 
       {/* Description */}
       {product.description && (

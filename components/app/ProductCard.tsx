@@ -126,18 +126,32 @@ export function ProductCard({ product }: ProductCardProps) {
           </h3>
         </Link>
         <div className="flex items-baseline justify-between gap-2">
-          <p className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
-            {formatPrice(product.price)}
-          </p>
-          {vehicleCondition && (
-            <Badge
-              variant="secondary"
-              className="w-fit bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-200"
-            >
-              {vehicleCondition}
-            </Badge>
-          )}
-        </div>
+  <div className="flex items-center gap-2">
+    <p className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
+      {formatPrice(product.price)}
+    </p>
+    {product.originalPrice && product.originalPrice > (product.price ?? 0) && (
+      <>
+        <p className="text-sm text-zinc-400 line-through dark:text-zinc-500">
+          {formatPrice(product.originalPrice)}
+        </p>
+        <span className="rounded-full bg-red-100 px-1.5 py-0.5 text-[10px] font-medium text-red-600 dark:bg-red-900/30 dark:text-red-400">
+          {Math.round(
+            ((product.originalPrice - (product.price ?? 0)) / product.originalPrice) * 100
+          )}% OFF
+        </span>
+      </>
+    )}
+  </div>
+  {vehicleCondition && (
+    <Badge
+      variant="secondary"
+      className="w-fit bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-200"
+    >
+      {vehicleCondition}
+    </Badge>
+  )}
+</div>
       </CardContent>
 
       <CardFooter className="mt-auto p-5 pt-0">

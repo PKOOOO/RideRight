@@ -1,10 +1,15 @@
-import { gateway, type Tool, ToolLoopAgent } from "ai";
+import { type Tool, ToolLoopAgent } from "ai";
 import { searchProductsTool } from "./tools/search-products";
 import { createGetMyOrdersTool } from "./tools/get-my-orders";
+import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 
 interface ShoppingAgentOptions {
   userId: string | null;
 }
+
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+})
 
 const baseInstructions = `You are a friendly sales assistant for a premium car dealership - RideRight.
 
@@ -176,7 +181,7 @@ export function createShoppingAgent({ userId }: ShoppingAgentOptions) {
   }
 
   return new ToolLoopAgent({
-    model: gateway("anthropic/claude-haiku-4-5"),
+    model: openrouter("openrouter/free"),
     instructions,
     tools,
   });
