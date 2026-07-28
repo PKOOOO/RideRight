@@ -54,7 +54,10 @@ export function FeaturedCarousel({ products }: FeaturedCarouselProps) {
   }
 
   return (
-    <div className="relative w-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
+    <div
+  suppressHydrationWarning
+  className="relative w-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950"
+>
       <Carousel
         setApi={setApi}
         opts={{
@@ -148,6 +151,11 @@ function FeaturedSlide({ product }: FeaturedSlideProps) {
 
       {/* Content Section - Right side (40% on desktop) */}
       <div className="flex w-full flex-col justify-center px-6 py-8 md:w-2/5 md:px-10 lg:px-16">
+      {product.dealOfTheWeek && (
+        <Badge className="mb-4 w-fit bg-amber-500/20 text-amber-400 hover:bg-amber-500/30">
+          🔥 Deal of the Week
+        </Badge>
+      )}
         {vehicleCondition && (
           <Badge
             variant="secondary"

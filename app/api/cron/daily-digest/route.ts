@@ -11,10 +11,6 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function GET(req: NextRequest) {
-  // const authHeader = req.headers.get("authorization");
-  // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  // }
 
   const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 

@@ -155,7 +155,8 @@ export const FEATURED_PRODUCTS_QUERY = defineQuery(`*[
   mileage,
   horsePower,
   torque,
-  stock
+  stock,
+  dealOfTheWeek
 }`);
 
 /**

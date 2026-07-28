@@ -34,6 +34,16 @@ interface PageProps {
   }>;
 }
 
+// Fisher-Yates shuffle — used to randomize grid order on each page load
+function shuffle<T>(array: T[]): T[] {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
 export default async function HomePage({ searchParams }: PageProps) {
   const params = await searchParams;
 
@@ -44,15 +54,13 @@ export default async function HomePage({ searchParams }: PageProps) {
   const transmission = params.transmission ?? "";
   const minPrice = Number(params.minPrice) || 0;
   const maxPrice = Number(params.maxPrice) || 0;
-  const sort = params.sort ?? "year_desc";
+  const sort = params.sort ?? "random";
   const inStock = params.inStock === "true";
   const originParam = params.origin ?? "all";
-  // "all" means show everything — pass empty string to GROQ so the filter is skipped
   const origin = originParam === "all" ? "" : originParam;
 
   // Select query based on sort parameter
   const getQuery = () => {
-    // If searching and sort is relevance, use relevance query
     if (searchQuery && sort === "relevance") {
       return FILTER_PRODUCTS_BY_RELEVANCE_QUERY;
     }
@@ -66,6 +74,8 @@ export default async function HomePage({ searchParams }: PageProps) {
         return FILTER_PRODUCTS_BY_YEAR_DESC_QUERY;
       case "relevance":
         return FILTER_PRODUCTS_BY_RELEVANCE_QUERY;
+      case "random":
+        return FILTER_PRODUCTS_BY_NAME_QUERY;
       default:
         return FILTER_PRODUCTS_BY_NAME_QUERY;
     }
@@ -87,6 +97,9 @@ export default async function HomePage({ searchParams }: PageProps) {
     },
   });
 
+  // Randomize order on each page load when sort is "random" (default)
+  const displayedProducts = sort === "random" ? shuffle(products) : products;
+
   // Fetch categories for filter sidebar
   const { data: categories } = await sanityFetch({
     query: ALL_CATEGORIES_QUERY,
@@ -99,12 +112,12 @@ export default async function HomePage({ searchParams }: PageProps) {
   });
 
   const availableModels = Array.from(
-  new Set<string>(
-    modelData
-      ?.map((p: { model: string | null }) => p.model)
-      .filter((m): m is string => Boolean(m)) ?? []
-  )
-);
+    new Set<string>(
+      modelData
+        ?.map((p: { model: string | null }) => p.model)
+        .filter((m): m is string => Boolean(m)) ?? []
+    )
+  );
 
   // Fetch featured products for carousel
   const { data: featuredProducts } = await sanityFetch({
@@ -113,18 +126,15 @@ export default async function HomePage({ searchParams }: PageProps) {
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
-      {/* SEO Structured Data */}
       <OrganizationJsonLd />
       <WebsiteJsonLd />
 
-      {/* Featured Cars Carousel */}
       {featuredProducts.length > 0 && (
         <Suspense fallback={<FeaturedCarouselSkeleton />}>
           <FeaturedCarousel products={featuredProducts} />
         </Suspense>
       )}
 
-      {/* Page Banner */}
       <div className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
         <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
@@ -135,7 +145,6 @@ export default async function HomePage({ searchParams }: PageProps) {
           </p>
         </div>
 
-        {/* Category Tiles - Full width */}
         <div className="mt-6">
           <CategoryTiles
             categories={categories}
@@ -143,7 +152,6 @@ export default async function HomePage({ searchParams }: PageProps) {
           />
         </div>
 
-        {/* Origin Category Tabs */}
         <div className="mt-4">
           <OriginTabs activeOrigin={originParam} />
         </div>
@@ -152,7 +160,7 @@ export default async function HomePage({ searchParams }: PageProps) {
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <ProductSection
           categories={categories}
-          products={products}
+          products={displayedProducts}
           searchQuery={searchQuery}
           availableModels={availableModels}
         />
