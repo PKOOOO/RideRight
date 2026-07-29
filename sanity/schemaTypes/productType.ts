@@ -219,6 +219,14 @@ export const productType = defineType({
       initialValue: false,
       description: "Show on homepage and promotions",
     }),
+    defineField({
+      name: "dealOfTheWeek",
+      title: "Deal of the Week",
+      type: "boolean",
+      group: "inventory",
+      initialValue: false,
+      description: "Enable to feature this car in the homepage carousel with a 'Deal of the Week' badge",
+    }),
   ],
   preview: {
     select: {

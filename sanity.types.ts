@@ -13,6 +13,16 @@
  */
 
 // Source: schema.json
+export type Subscriber = {
+  _id: string;
+  _type: "subscriber";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  email?: string;
+  subscribedAt?: string;
+};
+
 export type Order = {
   _id: string;
   _type: "order";
@@ -109,8 +119,10 @@ export type Product = {
     _type: "image";
     _key: string;
   }>;
+  originalPrice?: number;
   stock?: number;
   featured?: boolean;
+  dealOfTheWeek?: boolean;
 };
 
 export type SanityImageCrop = {
@@ -266,7 +278,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = Order | Product | SanityImageCrop | SanityImageHotspot | Slug | Customer | Category | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = Subscriber | Order | Product | SanityImageCrop | SanityImageHotspot | Slug | Customer | Category | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./lib/sanity/queries/categories.ts
 // Variable: ALL_CATEGORIES_QUERY
@@ -411,7 +423,7 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
     _key: string;
   }> | null;
   price: number | null;
-  originalPrice: null;
+  originalPrice: number | null;
   images: Array<{
     _key: string;
     asset: {
@@ -438,7 +450,7 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
   featured: boolean | null;
 }>;
 // Variable: FEATURED_PRODUCTS_QUERY
-// Query: *[  _type == "product"  && featured == true  && stock > 0] | order(year desc, name asc) [0...6] {  _id,  name,  "slug": slug.current,  description[]{  ...,  _type == "block" => {    ...,    children[]{...}  }},  price,  originalPrice,  "images": images[]{    _key,    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  year,  fuelType,  engine,  transmission,  origin,  location,  mileage,  horsePower,  torque,  stock}
+// Query: *[  _type == "product"  && dealOfTheWeek == true  && stock > 0] | order(year desc, name asc) [0...6] {  _id,  name,  "slug": slug.current,  description[]{  ...,  _type == "block" => {    ...,    children[]{...}  }},  price,  originalPrice,  "images": images[]{    _key,    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  year,  fuelType,  engine,  transmission,  origin,  location,  mileage,  horsePower,  torque,  stock,  dealOfTheWeek}
 export type FEATURED_PRODUCTS_QUERYResult = Array<{
   _id: string;
   name: string | null;
@@ -462,7 +474,7 @@ export type FEATURED_PRODUCTS_QUERYResult = Array<{
     _key: string;
   }> | null;
   price: number | null;
-  originalPrice: null;
+  originalPrice: number | null;
   images: Array<{
     _key: string;
     asset: {
@@ -486,6 +498,7 @@ export type FEATURED_PRODUCTS_QUERYResult = Array<{
   horsePower: number | null;
   torque: number | null;
   stock: number | null;
+  dealOfTheWeek: boolean | null;
 }>;
 // Variable: PRODUCTS_BY_CATEGORY_QUERY
 // Query: *[  _type == "product"  && category->slug.current == $categorySlug] | order(year desc, name asc) {  _id,  name,  "slug": slug.current,  price,  "image": images[0]{    asset->{      _id,      url    },    hotspot  },  category->{    _id,    title,    "slug": slug.current  },  year,  fuelType,  transmission,  origin,  stock}
@@ -537,7 +550,7 @@ export type PRODUCT_BY_SLUG_QUERYResult = {
     _key: string;
   }> | null;
   price: number | null;
-  originalPrice: null;
+  originalPrice: number | null;
   images: Array<{
     _key: string;
     asset: {
@@ -601,7 +614,7 @@ export type FILTER_PRODUCTS_BY_NAME_QUERYResult = Array<{
   model: string | null;
   slug: string | null;
   price: number | null;
-  originalPrice: null;
+  originalPrice: number | null;
   images: Array<{
     _key: string;
     asset: {
@@ -633,7 +646,7 @@ export type FILTER_PRODUCTS_BY_PRICE_ASC_QUERYResult = Array<{
   model: string | null;
   slug: string | null;
   price: number | null;
-  originalPrice: null;
+  originalPrice: number | null;
   images: Array<{
     _key: string;
     asset: {
@@ -665,7 +678,7 @@ export type FILTER_PRODUCTS_BY_PRICE_DESC_QUERYResult = Array<{
   model: string | null;
   slug: string | null;
   price: number | null;
-  originalPrice: null;
+  originalPrice: number | null;
   images: Array<{
     _key: string;
     asset: {
@@ -697,7 +710,7 @@ export type FILTER_PRODUCTS_BY_YEAR_DESC_QUERYResult = Array<{
   model: string | null;
   slug: string | null;
   price: number | null;
-  originalPrice: null;
+  originalPrice: number | null;
   images: Array<{
     _key: string;
     asset: {
@@ -729,7 +742,7 @@ export type FILTER_PRODUCTS_BY_RELEVANCE_QUERYResult = Array<{
   model: string | null;
   slug: string | null;
   price: number | null;
-  originalPrice: null;
+  originalPrice: number | null;
   images: Array<{
     _key: string;
     asset: {
@@ -933,7 +946,7 @@ declare module "@sanity/client" {
     "*[\n  _type == \"order\"\n] | order(createdAt desc) [0...$limit] {\n  _id,\n  orderNumber,\n  email,\n  total,\n  status,\n  createdAt\n}": RECENT_ORDERS_QUERYResult;
     "*[\n  _type == \"order\"\n  && stripePaymentId == $stripePaymentId\n][0]{ _id }": ORDER_BY_STRIPE_PAYMENT_ID_QUERYResult;
     "*[\n  _type == \"product\"\n] | order(name asc) {\n  _id,\n  name,\n  \"slug\": slug.current,\n  description[]{\n  ...,\n  _type == \"block\" => {\n    ...,\n    children[]{...}\n  }\n},\n  price,\n  originalPrice,\n  \"images\": images[]{\n    _key,\n    asset->{\n      _id,\n      url\n    },\n    hotspot\n  },\n  category->{\n    _id,\n    title,\n    \"slug\": slug.current\n  },\n\n  year,\n  fuelType,\n  engine,\n  transmission,\n  origin,\n\n  location,\n  mileage,\n  horsePower,\n  torque,\n  stock,\n  featured\n}": ALL_PRODUCTS_QUERYResult;
-    "*[\n  _type == \"product\"\n  && featured == true\n  && stock > 0\n] | order(year desc, name asc) [0...6] {\n  _id,\n  name,\n  \"slug\": slug.current,\n  description[]{\n  ...,\n  _type == \"block\" => {\n    ...,\n    children[]{...}\n  }\n},\n  price,\n  originalPrice,\n  \"images\": images[]{\n    _key,\n    asset->{\n      _id,\n      url\n    },\n    hotspot\n  },\n  category->{\n    _id,\n    title,\n    \"slug\": slug.current\n  },\n\n  year,\n  fuelType,\n  engine,\n  transmission,\n  origin,\n\n  location,\n  mileage,\n  horsePower,\n  torque,\n  stock\n}": FEATURED_PRODUCTS_QUERYResult;
+    "*[\n  _type == \"product\"\n  && dealOfTheWeek == true\n  && stock > 0\n] | order(year desc, name asc) [0...6] {\n  _id,\n  name,\n  \"slug\": slug.current,\n  description[]{\n  ...,\n  _type == \"block\" => {\n    ...,\n    children[]{...}\n  }\n},\n  price,\n  originalPrice,\n  \"images\": images[]{\n    _key,\n    asset->{\n      _id,\n      url\n    },\n    hotspot\n  },\n  category->{\n    _id,\n    title,\n    \"slug\": slug.current\n  },\n\n  year,\n  fuelType,\n  engine,\n  transmission,\n  origin,\n\n  location,\n  mileage,\n  horsePower,\n  torque,\n  stock,\n  dealOfTheWeek\n}": FEATURED_PRODUCTS_QUERYResult;
     "*[\n  _type == \"product\"\n  && category->slug.current == $categorySlug\n] | order(year desc, name asc) {\n  _id,\n  name,\n  \"slug\": slug.current,\n  price,\n  \"image\": images[0]{\n    asset->{\n      _id,\n      url\n    },\n    hotspot\n  },\n  category->{\n    _id,\n    title,\n    \"slug\": slug.current\n  },\n\n  year,\n  fuelType,\n  transmission,\n  origin,\n  stock\n}": PRODUCTS_BY_CATEGORY_QUERYResult;
     "*[\n  _type == \"product\"\n  && slug.current == $slug\n][0] {\n  _id,\n  name,\n  \"slug\": slug.current,\n  description[]{\n    ...,\n    _type == \"block\" => {\n      ...,\n      children[]{...}\n    }\n  },\n  price,\n  originalPrice,\n  \"images\": images[]{\n    _key,\n    asset->{\n      _id,\n      url\n    },\n    hotspot\n  },\n  category->{\n    _id,\n    title,\n    \"slug\": slug.current\n  },\n  year,\n  fuelType,\n  engine,\n  transmission,\n  origin,\n  location,\n  mileage,\n  horsePower,\n  torque,\n  stock,\n  featured\n}": PRODUCT_BY_SLUG_QUERYResult;
     "*[\n  _type == \"product\"\n  && (\n    name match $searchQuery + \"*\"\n    || description match $searchQuery + \"*\"\n    || category->title match $searchQuery + \"*\"\n  )\n] | score(\n  boost(name match $searchQuery + \"*\", 3),\n  boost(category->title match $searchQuery + \"*\", 2),\n  boost(description match $searchQuery + \"*\", 1)\n) | order(_score desc) {\n  _id,\n  _score,\n  name,\n  \"slug\": slug.current,\n  price,\n  \"image\": images[0]{\n    asset->{\n      _id,\n      url\n    },\n    hotspot\n  },\n  category->{\n    _id,\n    title,\n    \"slug\": slug.current\n  },\n\n  year,\n  fuelType,\n  transmission,\n  origin,\n\n  location,\n  mileage,\n  horsePower,\n  torque,\n  stock\n}": SEARCH_PRODUCTS_QUERYResult;
