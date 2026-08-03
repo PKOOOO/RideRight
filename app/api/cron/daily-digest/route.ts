@@ -1,3 +1,9 @@
+console.log("DEBUG ENV CHECK:", {
+  hasGmailUser: !!process.env.GMAIL_USER,
+  hasGmailPass: !!process.env.GMAIL_APP_PASSWORD,
+  hasSanityToken: !!process.env.SANITY_API_WRITE_TOKEN,
+});
+
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { writeClient } from "@/sanity/lib/writeClient";
