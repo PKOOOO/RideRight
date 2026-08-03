@@ -212,6 +212,22 @@ export const productType = defineType({
         rule.integer().error("Stock must be a whole number"),
       ],
     }),
+
+    defineField({
+      name: "stockCode",
+      title: "WhatsApp Stock Code",
+      type: "string",
+      group: "inventory",
+      description:
+        "The code buyers type on WhatsApp to get this car's photos and details (e.g. TOYOTA_AXIO_A). Use letters, numbers and underscores only — no spaces. If you have two of the same model, append _A, _B, etc.",
+      validation: (rule) => [
+        rule.required().error("Stock code is required so the WhatsApp bot can find this car"),
+        rule
+          .regex(/^[A-Za-z0-9_]+$/)
+          .error("Use only letters, numbers, and underscores (no spaces)"),
+      ],
+    }),
+
     defineField({
       name: "featured",
       type: "boolean",
@@ -236,11 +252,13 @@ export const productType = defineType({
       price: "price",
       year: "year",
       stock: "stock",
+      stockCode: "stockCode",
     },
-    prepare({ title, subtitle, media, price, year, stock }) {
+    prepare({ title, subtitle, media, price, year, stock, stockCode }) {
       const stockLabel = stock <= 0 ? " • SOLD" : "";
+      const codeLabel = stockCode ? ` [${stockCode}]` : "";
       return {
-        title,
+        title: `${title}${codeLabel}`,
         subtitle: `${subtitle ?? ""} ${year ?? ""} • KES ${(price ?? 0).toLocaleString()}${stockLabel}`,
         media,
       };
