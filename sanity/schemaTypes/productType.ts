@@ -219,15 +219,13 @@ export const productType = defineType({
       type: "string",
       group: "inventory",
       description:
-        "The code buyers type on WhatsApp to get this car's photos and details (e.g. TOYOTA_AXIO_A). Use letters, numbers and underscores only — no spaces. If you have two of the same model, append _A, _B, etc.",
+      "Optional. The code buyers type on WhatsApp to get this car's photos and details (e.g. TOYOTA_AXIO_A). Use letters, numbers and underscores only — no spaces. Leave blank if this car isn't set up for WhatsApp lookup yet.",
       validation: (rule) => [
-        rule.required().error("Stock code is required so the WhatsApp bot can find this car"),
         rule
           .regex(/^[A-Za-z0-9_]+$/)
           .error("Use only letters, numbers, and underscores (no spaces)"),
       ],
     }),
-
     defineField({
       name: "featured",
       type: "boolean",
