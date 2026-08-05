@@ -17,6 +17,11 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function GET(req: NextRequest) {
+  console.log("DEBUG ENV CHECK:", {
+  hasGmailUser: !!process.env.GMAIL_USER,
+  hasGmailPass: !!process.env.GMAIL_APP_PASSWORD,
+  hasSanityToken: !!process.env.SANITY_API_WRITE_TOKEN,
+});
 
   const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
