@@ -226,6 +226,17 @@ export const productType = defineType({
           .error("Use only letters, numbers, and underscores (no spaces)"),
       ],
     }),
+
+    defineField({
+      name: "notifiedSubscribers",
+      title: "Subscribers Notified",
+      type: "boolean",
+      group: "inventory",
+      initialValue: false,
+      description: "Automatically set to true once the daily digest email has been sent for this car. Leave as-is.",
+      readOnly: true,
+    }),
+
     defineField({
       name: "featured",
       type: "boolean",
@@ -233,6 +244,7 @@ export const productType = defineType({
       initialValue: false,
       description: "Show on homepage and promotions",
     }),
+    
     defineField({
       name: "dealOfTheWeek",
       title: "Deal of the Week",

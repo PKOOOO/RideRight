@@ -1,9 +1,3 @@
-console.log("DEBUG ENV CHECK:", {
-  hasGmailUser: !!process.env.GMAIL_USER,
-  hasGmailPass: !!process.env.GMAIL_APP_PASSWORD,
-  hasSanityToken: !!process.env.SANITY_API_WRITE_TOKEN,
-});
-
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { writeClient } from "@/sanity/lib/writeClient";
@@ -17,21 +11,24 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function GET(req: NextRequest) {
-  console.log("DEBUG ENV CHECK:", {
-  hasGmailUser: !!process.env.GMAIL_USER,
-  hasGmailPass: !!process.env.GMAIL_APP_PASSWORD,
-  hasSanityToken: !!process.env.SANITY_API_WRITE_TOKEN,
-});
+  // Optional: verify this is actually Vercel Cron calling, not a random visitor
+  const authHeader = req.headers.get("authorization");
+  if (
+    process.env.CRON_SECRET &&
+    authHeader !== `Bearer ${process.env.CRON_SECRET}`
+  ) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-  const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-
+  // Find cars that haven't been included in a digest yet, regardless of
+  // how long they sat in drafts before being published.
   const newCars = await writeClient.fetch(
-    `*[_type == "product" && _createdAt >= $since] {
+    `*[_type == "product" && notifiedSubscribers != true] {
+      _id,
       name,
       "slug": slug.current,
       price
-    } | order(_createdAt desc)`,
-    { since: oneDayAgo }
+    } | order(_createdAt desc)`
   );
 
   if (!newCars || newCars.length === 0) {
@@ -77,5 +74,14 @@ export async function GET(req: NextRequest) {
     html: emailHtml,
   });
 
-  return NextResponse.json({ message: `Digest sent to ${emails.length} subscribers` });
+  // Mark these cars as notified so tomorrow's run doesn't re-send them.
+  const tx = writeClient.transaction();
+  for (const car of newCars as { _id: string }[]) {
+    tx.patch(car._id, { set: { notifiedSubscribers: true } });
+  }
+  await tx.commit();
+
+  return NextResponse.json({
+    message: `Digest sent to ${emails.length} subscribers for ${newCars.length} car(s)`,
+  });
 }
