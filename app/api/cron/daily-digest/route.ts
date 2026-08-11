@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
       (car: { name: string; slug: string; price: number }) => `
       <tr>
         <td style="padding:10px 0; border-top:1px solid #eee;">${car.name}</td>
-        <td style="padding:10px 0; border-top:1px solid #eee; text-align:right;">KES ${car.price?.toLocaleString() ?? "N/A"}</td>
+        <td style="padding:10px 0; border-top:1px solid #eee; text-align:right;">KES ${car.price != null ? `${car.price}M` : "N/A"}</td>
       </tr>`
     )
     .join("");
