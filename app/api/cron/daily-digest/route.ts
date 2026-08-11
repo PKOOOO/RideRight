@@ -1,17 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { writeClient } from "@/sanity/lib/writeClient";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+const FROM_ADDRESS = "RideRight Autos <updates@updates.rideright.ke>";
 
 export async function GET(req: NextRequest) {
-  // Optional: verify this is actually Vercel Cron calling, not a random visitor
   const authHeader = req.headers.get("authorization");
   if (
     process.env.CRON_SECRET &&
@@ -20,8 +15,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Find cars that haven't been included in a digest yet, regardless of
-  // how long they sat in drafts before being published.
   const newCars = await writeClient.fetch(
     `*[_type == "product" && notifiedSubscribers != true] {
       _id,
@@ -66,15 +59,31 @@ export async function GET(req: NextRequest) {
 
   const emails = subscribers.map((s: { email: string }) => s.email);
 
-  await transporter.sendMail({
-    from: `"RideRight Autos" <${process.env.GMAIL_USER}>`,
-    to: process.env.GMAIL_USER,
-    bcc: emails,
-    subject: `${newCars.length} new car${newCars.length > 1 ? "s" : ""} just arrived at RideRight`,
-    html: emailHtml,
-  });
+  const BATCH_SIZE = 50;
+  let sentCount = 0;
 
-  // Mark these cars as notified so tomorrow's run doesn't re-send them.
+  for (let i = 0; i < emails.length; i += BATCH_SIZE) {
+    const batch = emails.slice(i, i + BATCH_SIZE);
+
+    const { error } = await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: FROM_ADDRESS,
+      bcc: batch,
+      subject: `${newCars.length} new car${newCars.length > 1 ? "s" : ""} just arrived at RideRight`,
+      html: emailHtml,
+    });
+
+    if (error) {
+      console.error("Resend error for batch starting at index", i, error);
+      return NextResponse.json(
+        { error: "Failed to send digest", details: error.message },
+        { status: 500 }
+      );
+    }
+
+    sentCount += batch.length;
+  }
+
   const tx = writeClient.transaction();
   for (const car of newCars as { _id: string }[]) {
     tx.patch(car._id, { set: { notifiedSubscribers: true } });
@@ -82,6 +91,6 @@ export async function GET(req: NextRequest) {
   await tx.commit();
 
   return NextResponse.json({
-    message: `Digest sent to ${emails.length} subscribers for ${newCars.length} car(s)`,
+    message: `Digest sent to ${sentCount} subscribers for ${newCars.length} car(s)`,
   });
 }
