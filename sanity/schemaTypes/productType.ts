@@ -234,7 +234,7 @@ export const productType = defineType({
       group: "inventory",
       initialValue: false,
       description: "Automatically set to true once the daily digest email has been sent for this car. Leave as-is.",
-      readOnly: true,
+      readOnly: false,
     }),
 
     defineField({
