@@ -61,7 +61,7 @@ export const carRelease = defineType({
       type: 'object',
       fields: [
         'jackHandle', 'jack', 'jRaiser', 'radio', 'cd',
-        'floorMatts', 'headRest', 'cigaretteLighter', 'spareWheel', 'wheelSpanner',
+        'floorMats', 'headRest', 'cigaretteLighter', 'spareWheel', 'wheelSpanner',
       ].map((f) => defineField({ name: f, type: 'boolean', initialValue: false })),
     }),
     defineField({
